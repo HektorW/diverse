@@ -129,6 +129,27 @@ def eliminate(values, s, d):
   
 
 
+def solve(grid): return search(parse_grid(grid))
+
+def search(values):
+  """
+  Search for a solved puzzle with depth-first search and propagation.
+  Try all possible values.
+  """
+  if values is False:
+    return False ## Failed earlier
+  if all(len(values[s]) == 1 for s in squares):
+    return values ## Solved!
+  ## Choose the unfilled square s with the fewest possibilities
+  n,s = min((len(values[s]), s) for s in squares if len(values[s]) > 1)
+  return some(search(assign(values.copy(), s, d)) for d in values[s])
+
+def some(seq):
+  "Return some value of seq that is true."
+  for e in seq:
+    if e: return e
+  return False
+
 
 grids = [
 """
