@@ -3,11 +3,23 @@ body {
 }
 
 #navheader {
-	background-color: #56BA89;
+  /*background-color: #46ba95;*/
+	background-color: rgb(51, 51, 51);
+  color: white;
+}
+
+#mainheader {
+  background-color: #003057;
+  color: white;
 }
 
 core-header-panel[drawer] {
-	background-color: #ddd;
+  background-color: #d6d2c4;
+  color: #003057;
+}
+
+core-header-panel[main] {
+	background-color: #ececec;
 }
 
 .content {
@@ -16,9 +28,9 @@ core-header-panel[drawer] {
 
 
 paper-tabs.pink::shadow #selectionBar {
-  background-color: #ff4081;
+  background-color: #e87722;
 }
 
 paper-tabs.pink paper-tab::shadow #ink {
-  color: #ff4081;
+  color: #e87722;
 }
