@@ -11,5 +11,10 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.5.1",
+    "paper-elements": "Polymer/paper-elements#~0.5.1",
+    "jquery": "~2.1.1"
+  }
 }

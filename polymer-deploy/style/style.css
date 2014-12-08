@@ -1,0 +1,24 @@
+body {
+  font-family: sans-serif;
+}
+
+#navheader {
+	background-color: #56BA89;
+}
+
+core-header-panel[drawer] {
+	background-color: #ddd;
+}
+
+.content {
+	padding: 20px;
+}
+
+
+paper-tabs.pink::shadow #selectionBar {
+  background-color: #ff4081;
+}
+
+paper-tabs.pink paper-tab::shadow #ink {
+  color: #ff4081;
+}
