@@ -28,10 +28,10 @@
 		    <core-toolbar id="navheader">
 		      <span>Configurator Type</span>
 		    </core-toolbar>
-		    <core-menu selected="0">
-		      <core-item label="Chanel"></core-item>
-		      <core-item label="Next"></core-item>
-		      <core-item label="Showroom"></core-item>
+		    <core-menu selected="0" selectedAttribute="">
+		      <paper-item data-configurator data-type="chanel">Chanel</paper-item>
+		      <paper-item data-configurator data-type="next">Next</paper-item>
+		      <paper-item data-configurator data-type="showroom">Showroom</paper-item>
 		    </core-menu>
 		   </core-header-panel>
 
@@ -47,15 +47,12 @@
 		      
 					<div data-configurator-type data-type="chanel">
 
-						<paper-tabs class="pink" selected="0">
-							<paper-tab data-version-tab data-type="version">Version</paper-tab>
+						<paper-tabs selected="0">
 							<paper-tab data-version-tab data-type="driveline">Drivline</paper-tab>
 							<paper-tab data-version-tab data-type="kompass">Kompass</paper-tab>
 						</paper-tabs>
 
-	
-						<section data-tab-content data-type="version">
-
+						<section data-tab-content data-type="driveline">
 							<link-card fill="true">
 								<img width="70" height="70" src="flags/de.gif" alt="">
 								<h2>De</h2>
@@ -82,29 +79,124 @@
 							</link-card>
 						</section>
 
-						<section data-tab-content data-type="driveline">
-							<paper-item fill="true">De</paper-item>
-							<paper-item fill="true">Fr</paper-item>
-							<paper-item fill="true">Intl</paper-item>
-							<paper-item fill="true">At</paper-item>
-							<paper-item fill="true">Ca</paper-item>
-						</section>
-
 						<section data-tab-content data-type="kompass">
-							<paper-item fill="true">De</paper-item>
-							<paper-item fill="true">Fr</paper-item>
-							<paper-item fill="true">Intl</paper-item>
-							<paper-item fill="true">At</paper-item>
-							<paper-item fill="true">Ca</paper-item>
+							<link-card fill="true">
+								<img width="70" height="70" src="flags/de.gif" alt="">
+								<h2>De</h2>
+							</link-card>
+							<link-card fill="true">
+								<img width="70" height="70" src="flags/fr.gif" alt="">
+								<h2>Fr</h2>
+							</link-card>
+							<link-card fill="true">
+								<img width="70" height="70" src="flags/uk.gif" alt="">
+								<h2>Uk</h2>
+							</link-card>
 						</section>
 					</div>
 
 					<div data-configurator-type data-type="next">
-						Next
+
+						<paper-tabs selected="0">
+							<paper-tab data-version-tab data-type="version">Version</paper-tab>
+							<paper-tab data-version-tab data-type="driveline">Drivline</paper-tab>
+							<paper-tab data-version-tab data-type="kompass">Kompass</paper-tab>
+						</paper-tabs>
+
+						<section data-tab-content data-type="version">
+							<link-card fill="true">
+								<img width="70" height="70" src="flags/de.gif" alt="">
+								<h2>De</h2>
+							</link-card>
+							<link-card fill="true">
+								<img width="70" height="70" src="flags/fr.gif" alt="">
+								<h2>Fr</h2>
+							</link-card>
+							<link-card fill="true">
+								<img width="70" height="70" src="flags/intl.png" alt="">
+								<h2>Intl</h2>
+							</link-card>
+							<link-card fill="true">
+								<img width="70" height="70" src="flags/us.gif" alt="">
+								<h2>Us</h2>
+							</link-card>
+							<link-card fill="true">
+								<img width="70" height="70" src="flags/uk.gif" alt="">
+								<h2>Uk</h2>
+							</link-card>
+						</section>
+
+						<section data-tab-content data-type="driveline">
+							<link-card fill="true">
+								<img width="70" height="70" src="flags/de.gif" alt="">
+								<h2>De</h2>
+							</link-card>
+							<link-card fill="true">
+								<img width="70" height="70" src="flags/fr.gif" alt="">
+								<h2>Fr</h2>
+							</link-card>
+							<link-card fill="true">
+								<img width="70" height="70" src="flags/intl.png" alt="">
+								<h2>Intl</h2>
+							</link-card>
+							<link-card fill="true">
+								<img width="70" height="70" src="flags/ca.gif" alt="">
+								<h2>Ca</h2>
+							</link-card>
+							<link-card fill="true">
+								<img width="70" height="70" src="flags/us.gif" alt="">
+								<h2>Us</h2>
+							</link-card>
+							<link-card fill="true">
+								<img width="70" height="70" src="flags/uk.gif" alt="">
+								<h2>Uk</h2>
+							</link-card>
+						</section>
+
+						<section data-tab-content data-type="kompass">
+							<link-card fill="true">
+								<img width="70" height="70" src="flags/de.gif" alt="">
+								<h2>De</h2>
+							</link-card>
+							<link-card fill="true">
+								<img width="70" height="70" src="flags/fr.gif" alt="">
+								<h2>Fr</h2>
+							</link-card>
+							<link-card fill="true">
+								<img width="70" height="70" src="flags/uk.gif" alt="">
+								<h2>Uk</h2>
+							</link-card>
+						</section>
 					</div>
 
 					<div data-configurator-type data-type="showroom">
-						Showroom
+
+						<paper-tabs selected="0">
+							<paper-tab data-version-tab data-type="version">Version</paper-tab>
+						</paper-tabs>
+
+						<section data-tab-content data-type="version">
+							<link-card fill="true">
+								<img width="70" height="70" src="flags/de.gif" alt="">
+								<h2>De</h2>
+							</link-card>
+							<link-card fill="true">
+								<img width="70" height="70" src="flags/fr.gif" alt="">
+								<h2>Fr</h2>
+							</link-card>
+							<link-card fill="true">
+								<img width="70" height="70" src="flags/intl.png" alt="">
+								<h2>Intl</h2>
+							</link-card>
+							<link-card fill="true">
+								<img width="70" height="70" src="flags/us.gif" alt="">
+								<h2>Us</h2>
+							</link-card>
+							<link-card fill="true">
+								<img width="70" height="70" src="flags/uk.gif" alt="">
+								<h2>Uk</h2>
+							</link-card>
+						</section>
 					</div>
 
 		    </div>

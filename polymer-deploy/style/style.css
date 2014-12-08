@@ -17,9 +17,15 @@ core-header-panel[drawer] {
   background-color: #d6d2c4;
   color: #003057;
 }
+core-header-panel[drawer] paper-item.core-selected {
+  /*background: #5b7f95;*/
+  background-color: #d6d2c4;
+  font-weight: bold;
+}
+
 
 core-header-panel[main] {
-	background-color: #ececec;
+  background-color: #ececec;
 }
 
 .content {
@@ -27,10 +33,14 @@ core-header-panel[main] {
 }
 
 
-paper-tabs.pink::shadow #selectionBar {
+paper-tabs::shadow #selectionBar {
   background-color: #e87722;
 }
 
-paper-tabs.pink paper-tab::shadow #ink {
+paper-tabs paper-tab::shadow #ink {
   color: #e87722;
+}
+
+paper-tabs paper-tab.core-selected {
+  font-weight: bold;
 }
