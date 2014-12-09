@@ -3,6 +3,17 @@
 
 	$(document).on('polymer-ready', function() {
 
+
+		var markets = {
+			'zh-cn': {
+				flag: 'flags/china.jpg',
+				name: 'China'
+			}
+		};
+
+
+		
+
 		$('#drawerPanel').on('core-responsive-change', function() {
 			$('#navicon').get(0).hidden = !$('#drawerPanel').get(0).narrow;
 		});

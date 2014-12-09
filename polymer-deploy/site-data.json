@@ -1,8 +1,10 @@
 {
   "configurator-types": {
     "chanel": {
-      "de": "de.html",
-      "intl": "intl.html"
+      "version": {
+        "de": "de.html",
+        "intl": "intl.html"
+      }
     },
     "next:": {
 
