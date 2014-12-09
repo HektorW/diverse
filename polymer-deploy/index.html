@@ -14,24 +14,29 @@
 	<link rel="import" href="bower_components/core-drawer-panel/core-drawer-panel.html">
 
 	<link rel="import" href="bower_components/core-icons/core-icons.html">
+	<link rel="import" href="bower_components/core-ajax/core-xhr.html">
 
-	<link rel="import" href="bower_components/paper-elements/paper-elements.html">
+	<link rel="import" href="bower_components/paper-item/paper-item.html">
+	<link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
+	<link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
+	<link rel="import" href="bower_components/paper-tabs/paper-tab.html">
 
 
 	<link rel="import" href="elements/link-card.html">
+	<link rel="import" href="elements/deploy-app.html">
 </head>
 <body fullbleed vertical layout unresolved>
+	<deploy-app manifest="markets-data.json">
 	
 		<core-drawer-panel id="drawerPanel">
-
 		  <core-header-panel drawer>
 		    <core-toolbar id="navheader">
 		      <span>Configurator Type</span>
 		    </core-toolbar>
 		    <core-menu selected="0" selectedAttribute="">
-		      <paper-item data-configurator data-type="chanel">Chanel</paper-item>
-		      <paper-item data-configurator data-type="next">Next</paper-item>
-		      <paper-item data-configurator data-type="showroom">Showroom</paper-item>
+		      <!-- <paper-item data-configurator data-type="chanel">Chanel</paper-item> -->
+		      <!-- <paper-item data-configurator data-type="next">Next</paper-item> -->
+		      <!-- <paper-item data-configurator data-type="showroom">Showroom</paper-item> -->
 		    </core-menu>
 		   </core-header-panel>
 
@@ -55,31 +60,25 @@
 						<section data-tab-content data-type="driveline">
 
 						
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/de.gif" alt="">
-								<h2>De</h2>
+							<link-card fill="true" flag="de.gif">
+								<a href="#">De</a>
 							</link-card>
 
 
 
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/fr.gif" alt="">
+							<link-card fill="true" flag="fr.gif">
 								<h2>Fr</h2>
 							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/intl.png" alt="">
+							<link-card fill="true" flag="intl.png">
 								<h2>Intl</h2>
 							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/ca.gif" alt="">
+							<link-card fill="true" flag="ca.gif">
 								<h2>Ca</h2>
 							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/us.gif" alt="">
+							<link-card fill="true" flag="us.gif">
 								<h2>Us</h2>
 							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/uk.gif" alt="">
+							<link-card fill="true" flag="uk.gif">
 								<h2>Uk</h2>
 							</link-card>
 						</section>
@@ -211,6 +210,7 @@
 		  </core-header-panel>
 
 		</core-drawer-panel>
+	</deploy-app>
 
 	<script src="bower_components/jquery/dist/jquery.js"></script>
 	<script src="scripts/main.js"></script>

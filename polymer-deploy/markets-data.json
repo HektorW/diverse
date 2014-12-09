@@ -1,0 +1,27 @@
+{
+  "basurl": "",
+  "version": "4.showroom",
+  "configurator-types": {
+    "chanel": {
+      "modes": {
+        "driveline": {
+          "de": {
+            "href": "de.html"
+          },
+          "intl": {
+            "href": "intl.html"
+          }
+        },
+        "kompass": {
+          "de": "de-kompass.html"
+        }
+      }
+    },
+    "next": {
+
+    },
+    "showroom": {
+
+    }
+  }
+}
