@@ -1,10 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/core-ajax/core-xhr.html">
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html">
 
 <polymer-element name="deploy-app" attributes="manifest">>
   <template>
-    <!-- <core-xhr id="xhr"></core-xhr> -->
     <core-ajax
       id="ajax"
       auto
@@ -12,6 +10,7 @@
       handleAs="json"
       on-core-response="{{manifestLoaded}}"
       ></core-ajax>
+
     <content></content>
   </template>
   <script>
@@ -26,28 +25,66 @@
       }
 
 
+      var markets = {
+        "de": {
+          name: "De",
+          flag: "de.gif"
+        },
+        "fr": {
+          name: "Fr",
+          flag: "fr.gif"
+        },
+        "intl": {
+          name: "Intl",
+          flag: "intl.gif"
+        },
+        "ca": {
+          name: "Ca",
+          flag: "ca.gif"
+        },
+        "uk": {
+          name: "Uk",
+          flag: "uk.gif"
+        },
+        "us": {
+          name: "Us",
+          flag: "us.gif"
+        }
+      };
+
+
       Polymer({
         manifestLoaded: function(event) {
           var manifest = event.detail.response;
 
-          this.setupConfiguratorTypes(manifest);
+          this.setup(manifest);
         },
 
-        setupConfiguratorTypes: function(manifest) {
-          var menu = this.querySelector('core-header-panel[drawer] core-menu')
+        setup: function(manifest) {
+          var menu = this.querySelector('#configurator-type-menu');
+          var mainTitle = this.querySelector('#main-title');
 
+          // Set title
+          mainTitle.innerHTML = 'Deploy - ' + manifest.version;
 
-          for (var configuratorType in manifest['configurator-types']) {
+          var configuratorTypes = manifest.configuratorTypes;
+
+          for (var configuratorType in configuratorTypes) {
             var menuItem = Polymer.createDOM('paper-item', capitalize(configuratorType), {
               'data-configurator': true,
               'data-type': configuratorType
             });
             menu.appendChild(menuItem);
 
-            
+            this.setupConfiguratorType(configuratorType, configuratorTypes[configuratorType]);
           }
+        },
+
+        setupConfiguratorType: function(type, data) {
+
         }
-      })
+      });
+
     }());
   </script>
 </polymer-element>

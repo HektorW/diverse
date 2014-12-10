@@ -1,27 +1,51 @@
 {
-  "basurl": "",
-  "version": "4.showroom",
-  "configurator-types": {
-    "chanel": {
-      "modes": {
-        "driveline": {
-          "de": {
-            "href": "de.html"
-          },
-          "intl": {
-            "href": "intl.html"
-          }
+    "version": "4.showroom",
+    "baseurl": "",
+    "configuratorTypes": {
+        "desktop": {
+            "driveline": {
+                "at": "at_desktop.html",
+                "de": "de_desktop.html",
+                "us": "us_desktop.html",
+                "zh-cn": "zh-cn_desktop.html",
+                "ca": "ca_desktop.html",
+                "fr": "fr_desktop.html",
+                "intl": "intl_desktop.html",
+                "au": "au_desktop.html"
+            },
+            "kompass": {
+                "de": "de-kompass_desktop.html"
+            }
         },
-        "kompass": {
-          "de": "de-kompass.html"
+        "next": {
+            "driveline": {
+                "at": "at_next.html",
+                "de": "de_next.html",
+                "us": "us_next.html",
+                "zh-cn": "zh-cn_next.html",
+                "ca": "ca_next.html",
+                "fr": "fr_next.html",
+                "intl": "intl_next.html",
+                "au": "au_next.html"
+            },
+            "version": {
+                "de": "de-version_next.html",
+                "us": "us-version_next.html",
+                "intl": "intl-version_next.html"
+            },
+            "kompass": {
+                "de": "de-kompass_next.html"
+            },
+            "kompass-version": {
+                "de": "de-kompass-version_next.html"
+            }
+        },
+        "showroom": {
+            "version": {
+                "de": "de-version_showroom.html",
+                "us": "us-version_showroom.html",
+                "intl": "intl-version_showroom.html"
+            }
         }
-      }
-    },
-    "next": {
-
-    },
-    "showroom": {
-
     }
-  }
 }
