@@ -1,28 +1,54 @@
+
 <!doctype html>
 <html>
 <head>
+	<!-- Ignored by ie >= 10 -->
+	<!--[if IE]>
+	<script>
+		window.location = "fallback.html";
+	</script>
+	<![endif]-->
+
 	<title>Polymer-deploy</title>
 
-	<link rel="stylesheet" href="style/style.css">
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
-	<script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
+	<style shim-shadowdom>
+			body { font-family: sans-serif; }
+
+		#navheader { background-color: rgb(51, 51, 51); color: white; }
+
+		#mainheader { background-color: #003057; color: white; }
+
+		core-header-panel[drawer] { background-color: #ececec; color: #003057; }
+		core-header-panel[drawer] paper-item.core-selected { font-weight: bold; }
+
+		core-header-panel[main] { background-color: white; }
+
+		.content { padding: 20px; }
+
+		paper-tabs::shadow #selectionBar { background-color: #e87722; }
+
+		paper-tabs paper-tab::shadow #ink { color: #e87722; }
+
+		paper-tabs paper-tab.core-selected { font-weight: bold; }
+
+		[data-configurator-type-content].selected { display: block; }
+		[data-configurator-type-content] { display: none; }
+	</style>
+
+	<script src="../deploy-assets/libs/webcomponents.min.js"></script>
 
 	<link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
 	<link rel="import" href="bower_components/core-menu/core-menu.html">
-	<link rel="import" href="bower_components/core-item/core-item.html">
 	<link rel="import" href="bower_components/core-header-panel/core-header-panel.html">
 	<link rel="import" href="bower_components/core-drawer-panel/core-drawer-panel.html">
 
 	<link rel="import" href="bower_components/core-icons/core-icons.html">
-	<link rel="import" href="bower_components/core-ajax/core-xhr.html">
 
-	<link rel="import" href="bower_components/paper-item/paper-item.html">
 	<link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
 	<link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
-	<link rel="import" href="bower_components/paper-tabs/paper-tab.html">
 
-
-	<link rel="import" href="elements/link-card.html">
 	<link rel="import" href="elements/deploy-app.html">
 </head>
 <body fullbleed vertical layout unresolved>
@@ -35,6 +61,7 @@
 		    </core-toolbar>
 
 		    <core-menu id="configurator-type-menu" selected="0" selectedAttribute="">
+		    	<!-- <paper-item data-configurator-type-link data-type="chanel">Chanel</p></paper-item> -->
 		    </core-menu>
 
 		   </core-header-panel>
@@ -46,171 +73,28 @@
 		    </core-toolbar>
 
 
-		    <div class="content-container">
+		    <div id="content-container">
 		      
-					<div data-configurator-type data-type="chanel">
+					<!-- <div data-configurator-type-content data-type="chanel">
 
 						<paper-tabs selected="0">
 							<paper-tab data-version-tab data-type="driveline">Drivline</paper-tab>
-							<paper-tab data-version-tab data-type="kompass">Kompass</paper-tab>
 						</paper-tabs>
 
 						<section data-tab-content data-type="driveline">
-
-						
 							<link-card fill="true" flag="de.gif">
 								<a href="#">De</a>
 							</link-card>
-
-
-
-							<link-card fill="true" flag="fr.gif">
-								<h2>Fr</h2>
-							</link-card>
-							<link-card fill="true" flag="intl.png">
-								<h2>Intl</h2>
-							</link-card>
-							<link-card fill="true" flag="ca.gif">
-								<h2>Ca</h2>
-							</link-card>
-							<link-card fill="true" flag="us.gif">
-								<h2>Us</h2>
-							</link-card>
-							<link-card fill="true" flag="uk.gif">
-								<h2>Uk</h2>
-							</link-card>
 						</section>
-
-						<section data-tab-content data-type="kompass">
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/de.gif" alt="">
-								<h2>De</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/fr.gif" alt="">
-								<h2>Fr</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/uk.gif" alt="">
-								<h2>Uk</h2>
-							</link-card>
-						</section>
-					</div>
-
-					<div data-configurator-type data-type="next">
-
-						<paper-tabs selected="0">
-							<paper-tab data-version-tab data-type="version">Version</paper-tab>
-							<paper-tab data-version-tab data-type="driveline">Drivline</paper-tab>
-							<paper-tab data-version-tab data-type="kompass">Kompass</paper-tab>
-						</paper-tabs>
-
-						<section data-tab-content data-type="version">
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/de.gif" alt="">
-								<h2>De</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/fr.gif" alt="">
-								<h2>Fr</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/intl.png" alt="">
-								<h2>Intl</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/us.gif" alt="">
-								<h2>Us</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/uk.gif" alt="">
-								<h2>Uk</h2>
-							</link-card>
-						</section>
-
-						<section data-tab-content data-type="driveline">
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/de.gif" alt="">
-								<h2>De</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/fr.gif" alt="">
-								<h2>Fr</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/intl.png" alt="">
-								<h2>Intl</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/ca.gif" alt="">
-								<h2>Ca</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/us.gif" alt="">
-								<h2>Us</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/uk.gif" alt="">
-								<h2>Uk</h2>
-							</link-card>
-						</section>
-
-						<section data-tab-content data-type="kompass">
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/de.gif" alt="">
-								<h2>De</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/fr.gif" alt="">
-								<h2>Fr</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/uk.gif" alt="">
-								<h2>Uk</h2>
-							</link-card>
-						</section>
-					</div>
-
-					<div data-configurator-type data-type="showroom">
-
-						<paper-tabs selected="0">
-							<paper-tab data-version-tab data-type="version">Version</paper-tab>
-						</paper-tabs>
-
-						<section data-tab-content data-type="version">
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/de.gif" alt="">
-								<h2>De</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/fr.gif" alt="">
-								<h2>Fr</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/intl.png" alt="">
-								<h2>Intl</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/us.gif" alt="">
-								<h2>Us</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/uk.gif" alt="">
-								<h2>Uk</h2>
-							</link-card>
-						</section>
-					</div>
+					</div> -->
 
 		    </div>
-
-
 
 		  </core-header-panel>
 
 		</core-drawer-panel>
 	</deploy-app>
 
-	<script src="bower_components/jquery/dist/jquery.js"></script>
-	<script src="scripts/main.js"></script>
+	<script src="../deploy-assets/libs/jquery.js"></script>
 </body>
 </html>

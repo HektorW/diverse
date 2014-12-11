@@ -1,9 +1,40 @@
 <!DOCTYPE html><html><head>
+	<!-- Ignored by ie >= 10 -->
+	<!--[if IE]>
+	<script>
+		window.location = "fallback.html";
+	</script>
+	<![endif]-->
+
 	<title>Polymer-deploy</title>
 
-	<link rel="stylesheet" href="style/style.css">
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
-	<script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
+	<style shim-shadowdom="">
+			body { font-family: sans-serif; }
+
+		#navheader { background-color: rgb(51, 51, 51); color: white; }
+
+		#mainheader { background-color: #003057; color: white; }
+
+		core-header-panel[drawer] { background-color: #ececec; color: #003057; }
+		core-header-panel[drawer] paper-item.core-selected { font-weight: bold; }
+
+		core-header-panel[main] { background-color: white; }
+
+		.content { padding: 20px; }
+
+		paper-tabs::shadow #selectionBar { background-color: #e87722; }
+
+		paper-tabs paper-tab::shadow #ink { color: #e87722; }
+
+		paper-tabs paper-tab.core-selected { font-weight: bold; }
+
+		[data-configurator-type-content].selected { display: block; }
+		[data-configurator-type-content] { display: none; }
+	</style>
+
+	<script src="../deploy-assets/libs/webcomponents.min.js"></script>
 
 	<style shim-shadowdom="">
 /*******************************
@@ -299,6 +330,16 @@ html /deep/ [segment], html /deep/ segment {
 	
 
 
+	
+
+
+
+
+
+
+	
+
+
 
 
 
@@ -322,23 +363,12 @@ html /deep/ core-icon {
 
 
 
-	
-
-
-	
-
-
-
 
 
 
 	
 
 
-
-
-
-	
 
 
 
@@ -359,17 +389,22 @@ html /deep/ core-icon {
 
 
 
-	
-
-
-
-
-
 
 	
 
 
-	
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -441,7 +476,8 @@ html /deep/ .paper-shadow-bottom-z-5 {
 }</style>
 
 
-<!-- <link rel="import" href="../bower_components/paper-riple/paper-riple.html"> -->
+
+
 
 
 </head>
@@ -1232,499 +1268,6 @@ polyfill-next-selector { content: ':host > core-item'; }
   
 </template>
 <script>Polymer('core-menu');</script></polymer-element>
-
-<polymer-element name="core-meta" attributes="label type" hidden="" assetpath="bower_components/core-meta/">
-<script>
-
-  (function() {
-    
-    var SKIP_ID = 'meta';
-    var metaData = {}, metaArray = {};
-
-    Polymer('core-meta', {
-      
-      /**
-       * The type of meta-data.  All meta-data with the same type with be
-       * stored together.
-       * 
-       * @attribute type
-       * @type string
-       * @default 'default'
-       */
-      type: 'default',
-      
-      alwaysPrepare: true,
-      
-      ready: function() {
-        this.register(this.id);
-      },
-      
-      get metaArray() {
-        var t = this.type;
-        if (!metaArray[t]) {
-          metaArray[t] = [];
-        }
-        return metaArray[t];
-      },
-      
-      get metaData() {
-        var t = this.type;
-        if (!metaData[t]) {
-          metaData[t] = {};
-        }
-        return metaData[t];
-      },
-      
-      register: function(id, old) {
-        if (id && id !== SKIP_ID) {
-          this.unregister(this, old);
-          this.metaData[id] = this;
-          this.metaArray.push(this);
-        }
-      },
-      
-      unregister: function(meta, id) {
-        delete this.metaData[id || meta.id];
-        var i = this.metaArray.indexOf(meta);
-        if (i >= 0) {
-          this.metaArray.splice(i, 1);
-        }
-      },
-      
-      /**
-       * Returns a list of all meta-data elements with the same type.
-       * 
-       * @property list
-       * @type array
-       * @default []
-       */
-      get list() {
-        return this.metaArray;
-      },
-      
-      /**
-       * Retrieves meta-data by ID.
-       *
-       * @method byId
-       * @param {String} id The ID of the meta-data to be returned.
-       * @returns Returns meta-data.
-       */
-      byId: function(id) {
-        return this.metaData[id];
-      }
-      
-    });
-    
-  })();
-  
-</script>
-</polymer-element>
-<polymer-element name="core-iconset" extends="core-meta" attributes="src width icons iconSize" assetpath="bower_components/core-iconset/">
-  
-  <script>
-  
-    Polymer('core-iconset', {
-  
-      /**
-       * The URL of the iconset image.
-       *
-       * @attribute src
-       * @type string
-       * @default ''
-       */
-      src: '',
-
-      /**
-       * The width of the iconset image. This must only be specified if the
-       * icons are arranged into separate rows inside the image.
-       *
-       * @attribute width
-       * @type number
-       * @default 0
-       */
-      width: 0,
-
-      /**
-       * A space separated list of names corresponding to icons in the iconset
-       * image file. This list must be ordered the same as the icon images
-       * in the image file.
-       *
-       * @attribute icons
-       * @type string
-       * @default ''
-       */
-      icons: '',
-
-      /**
-       * The size of an individual icon. Note that icons must be square.
-       *
-       * @attribute iconSize
-       * @type number
-       * @default 24
-       */
-      iconSize: 24,
-
-      /**
-       * The horizontal offset of the icon images in the inconset src image.
-       * This is typically used if the image resource contains additional images
-       * beside those intended for the iconset.
-       *
-       * @attribute offsetX
-       * @type number
-       * @default 0
-       */
-      offsetX: 0,
-      /**
-       * The vertical offset of the icon images in the inconset src image.
-       * This is typically used if the image resource contains additional images
-       * beside those intended for the iconset.
-       *
-       * @attribute offsetY
-       * @type number
-       * @default 0
-       */
-      offsetY: 0,
-      type: 'iconset',
-
-      created: function() {
-        this.iconMap = {};
-        this.iconNames = [];
-        this.themes = {};
-      },
-  
-      ready: function() {
-        // TODO(sorvell): ensure iconset's src is always relative to the main
-        // document
-        if (this.src && (this.ownerDocument !== document)) {
-          this.src = this.resolvePath(this.src, this.ownerDocument.baseURI);
-        }
-        this.super();
-        this.updateThemes();
-      },
-
-      iconsChanged: function() {
-        var ox = this.offsetX;
-        var oy = this.offsetY;
-        this.icons && this.icons.split(/\s+/g).forEach(function(name, i) {
-          this.iconNames.push(name);
-          this.iconMap[name] = {
-            offsetX: ox,
-            offsetY: oy
-          }
-          if (ox + this.iconSize < this.width) {
-            ox += this.iconSize;
-          } else {
-            ox = this.offsetX;
-            oy += this.iconSize;
-          }
-        }, this);
-      },
-
-      updateThemes: function() {
-        var ts = this.querySelectorAll('property[theme]');
-        ts && ts.array().forEach(function(t) {
-          this.themes[t.getAttribute('theme')] = {
-            offsetX: parseInt(t.getAttribute('offsetX')) || 0,
-            offsetY: parseInt(t.getAttribute('offsetY')) || 0
-          };
-        }, this);
-      },
-
-      // TODO(ffu): support retrived by index e.g. getOffset(10);
-      /**
-       * Returns an object containing `offsetX` and `offsetY` properties which
-       * specify the pixel locaion in the iconset's src file for the given
-       * `icon` and `theme`. It's uncommon to call this method. It is useful,
-       * for example, to manually position a css backgroundImage to the proper
-       * offset. It's more common to use the `applyIcon` method.
-       *
-       * @method getOffset
-       * @param {String|Number} icon The name of the icon or the index of the
-       * icon within in the icon image.
-       * @param {String} theme The name of the theme.
-       * @returns {Object} An object specifying the offset of the given icon 
-       * within the icon resource file; `offsetX` is the horizontal offset and
-       * `offsetY` is the vertical offset. Both values are in pixel units.
-       */
-      getOffset: function(icon, theme) {
-        var i = this.iconMap[icon];
-        if (!i) {
-          var n = this.iconNames[Number(icon)];
-          i = this.iconMap[n];
-        }
-        var t = this.themes[theme];
-        if (i && t) {
-          return {
-            offsetX: i.offsetX + t.offsetX,
-            offsetY: i.offsetY + t.offsetY
-          }
-        }
-        return i;
-      },
-
-      /**
-       * Applies an icon to the given element as a css background image. This
-       * method does not size the element, and it's often necessary to set 
-       * the element's height and width so that the background image is visible.
-       *
-       * @method applyIcon
-       * @param {Element} element The element to which the background is
-       * applied.
-       * @param {String|Number} icon The name or index of the icon to apply.
-       * @param {Number} scale (optional, defaults to 1) A scaling factor 
-       * with which the icon can be magnified.
-       * @return {Element} The icon element.
-       */
-      applyIcon: function(element, icon, scale) {
-        var offset = this.getOffset(icon);
-        scale = scale || 1;
-        if (element && offset) {
-          var icon = element._icon || document.createElement('div');
-          var style = icon.style;
-          style.backgroundImage = 'url(' + this.src + ')';
-          style.backgroundPosition = (-offset.offsetX * scale + 'px') + 
-             ' ' + (-offset.offsetY * scale + 'px');
-          style.backgroundSize = scale === 1 ? 'auto' :
-             this.width * scale + 'px';
-          if (icon.parentNode !== element) {
-            element.appendChild(icon);
-          }
-          return icon;
-        }
-      }
-
-    });
-
-  </script>
-
-</polymer-element>
-<polymer-element name="core-icon" attributes="src icon alt" assetpath="bower_components/core-icon/">
-<script>
-(function() {
-  
-  // mono-state
-  var meta;
-  
-  Polymer('core-icon', {
-
-    /**
-     * The URL of an image for the icon. If the src property is specified,
-     * the icon property should not be.
-     *
-     * @attribute src
-     * @type string
-     * @default ''
-     */
-    src: '',
-
-    /**
-     * Specifies the icon name or index in the set of icons available in
-     * the icon's icon set. If the icon property is specified,
-     * the src property should not be.
-     *
-     * @attribute icon
-     * @type string
-     * @default ''
-     */
-    icon: '',
-
-    /**
-     * Alternative text content for accessibility support.
-     * If alt is present and not empty, it will set the element's role to img and add an aria-label whose content matches alt.
-     * If alt is present and is an empty string, '', it will hide the element from the accessibility layer
-     * If alt is not present, it will set the element's role to img and the element will fallback to using the icon attribute for its aria-label.
-     * 
-     * @attribute alt
-     * @type string
-     * @default ''
-     */
-    alt: null,
-
-    observe: {
-      'icon': 'updateIcon',
-      'alt': 'updateAlt'
-    },
-
-    defaultIconset: 'icons',
-
-    ready: function() {
-      if (!meta) {
-        meta = document.createElement('core-iconset');
-      }
-
-      // Allow user-provided `aria-label` in preference to any other text alternative.
-      if (this.hasAttribute('aria-label')) {
-        // Set `role` if it has not been overridden.
-        if (!this.hasAttribute('role')) {
-          this.setAttribute('role', 'img');
-        }
-        return;
-      }
-      this.updateAlt();
-    },
-
-    srcChanged: function() {
-      var icon = this._icon || document.createElement('div');
-      icon.textContent = '';
-      icon.setAttribute('fit', '');
-      icon.style.backgroundImage = 'url(' + this.src + ')';
-      icon.style.backgroundPosition = 'center';
-      icon.style.backgroundSize = '100%';
-      if (!icon.parentNode) {
-        this.appendChild(icon);
-      }
-      this._icon = icon;
-    },
-
-    getIconset: function(name) {
-      return meta.byId(name || this.defaultIconset);
-    },
-
-    updateIcon: function(oldVal, newVal) {
-      if (!this.icon) {
-        this.updateAlt();
-        return;
-      }
-      var parts = String(this.icon).split(':');
-      var icon = parts.pop();
-      if (icon) {
-        var set = this.getIconset(parts.pop());
-        if (set) {
-          this._icon = set.applyIcon(this, icon);
-          if (this._icon) {
-            this._icon.setAttribute('fit', '');
-          }
-        }
-      }
-      // Check to see if we're using the old icon's name for our a11y fallback
-      if (oldVal) {
-        if (oldVal.split(':').pop() == this.getAttribute('aria-label')) {
-          this.updateAlt();
-        }
-      }
-    },
-
-    updateAlt: function() {
-      // Respect the user's decision to remove this element from
-      // the a11y tree
-      if (this.getAttribute('aria-hidden')) {
-        return;
-      }
-
-      // Remove element from a11y tree if `alt` is empty, otherwise
-      // use `alt` as `aria-label`.
-      if (this.alt === '') {
-        this.setAttribute('aria-hidden', 'true');
-        if (this.hasAttribute('role')) {
-          this.removeAttribute('role');
-        }
-        if (this.hasAttribute('aria-label')) {
-          this.removeAttribute('aria-label');
-        }
-      } else {
-        this.setAttribute('aria-label', this.alt ||
-                                        this.icon.split(':').pop());
-        if (!this.hasAttribute('role')) {
-          this.setAttribute('role', 'img');
-        }
-        if (this.hasAttribute('aria-hidden')) {
-          this.removeAttribute('aria-hidden');
-        }
-      }
-    }
-
-  });
-  
-})();
-</script>
-
-</polymer-element>
-<polymer-element name="core-item" attributes="label icon src" horizontal="" center="" layout="" assetpath="bower_components/core-item/">
-<template>
-  <style>/*
-Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
-*/
-
-:host {
-  display: block;
-  position: relative;
-  min-height: 40px;
-  white-space: nowrap;
-}
-
-:host(.font-scalable) {
-  min-height: 2.5em;
-}
-
-:host(.core-selected) {
-  font-weight: bold;
-}
-
-#icon {
-  margin: 0 16px 0 4px;
-}
-
-:host(.font-scalable) #icon {
-  margin: 0 1em 0 0.25em;
-  height: 1.5em;
-  width: 1.5em;
-}
-
-polyfill-next-selector { content: ':host > a'; }
-::content > a {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  /* IE10 styling to ensure link is clickable. Cannot be completely
-  transparent or minifiers change it to `transparent` which does not work. */
-  background-color: rgba(0, 0, 0, 0.000001);
-}
-</style>
-  <template if="{{icon || src}}">
-    <core-icon src="{{src}}" id="icon" icon="{{icon}}" hidden?="{{!src &amp;&amp; !icon}}"></core-icon>
-  </template>
-  <div id="label">{{label}}</div>
-  <content></content>
-</template>
-<script>
-
-  Polymer('core-item', {
-    
-    /**
-     * The URL of an image for the icon.
-     *
-     * @attribute src
-     * @type string
-     * @default ''
-     */
-
-    /**
-     * Specifies the icon from the Polymer icon set.
-     *
-     * @attribute icon
-     * @type string
-     * @default ''
-     */
-
-    /**
-     * Specifies the label for the menu item.
-     *
-     * @attribute label
-     * @type string
-     * @default ''
-     */
-
-  });
-
-</script>
-</polymer-element>
 
 <polymer-element name="core-header-panel" assetpath="bower_components/core-header-panel/">
 <template>
@@ -2528,6 +2071,413 @@ core-selector:not(.narrow-layout) ::content [core-drawer-toggle] {
   });
 
 </script>
+</polymer-element>
+
+<polymer-element name="core-meta" attributes="label type" hidden="" assetpath="bower_components/core-meta/">
+<script>
+
+  (function() {
+    
+    var SKIP_ID = 'meta';
+    var metaData = {}, metaArray = {};
+
+    Polymer('core-meta', {
+      
+      /**
+       * The type of meta-data.  All meta-data with the same type with be
+       * stored together.
+       * 
+       * @attribute type
+       * @type string
+       * @default 'default'
+       */
+      type: 'default',
+      
+      alwaysPrepare: true,
+      
+      ready: function() {
+        this.register(this.id);
+      },
+      
+      get metaArray() {
+        var t = this.type;
+        if (!metaArray[t]) {
+          metaArray[t] = [];
+        }
+        return metaArray[t];
+      },
+      
+      get metaData() {
+        var t = this.type;
+        if (!metaData[t]) {
+          metaData[t] = {};
+        }
+        return metaData[t];
+      },
+      
+      register: function(id, old) {
+        if (id && id !== SKIP_ID) {
+          this.unregister(this, old);
+          this.metaData[id] = this;
+          this.metaArray.push(this);
+        }
+      },
+      
+      unregister: function(meta, id) {
+        delete this.metaData[id || meta.id];
+        var i = this.metaArray.indexOf(meta);
+        if (i >= 0) {
+          this.metaArray.splice(i, 1);
+        }
+      },
+      
+      /**
+       * Returns a list of all meta-data elements with the same type.
+       * 
+       * @property list
+       * @type array
+       * @default []
+       */
+      get list() {
+        return this.metaArray;
+      },
+      
+      /**
+       * Retrieves meta-data by ID.
+       *
+       * @method byId
+       * @param {String} id The ID of the meta-data to be returned.
+       * @returns Returns meta-data.
+       */
+      byId: function(id) {
+        return this.metaData[id];
+      }
+      
+    });
+    
+  })();
+  
+</script>
+</polymer-element>
+<polymer-element name="core-iconset" extends="core-meta" attributes="src width icons iconSize" assetpath="bower_components/core-iconset/">
+  
+  <script>
+  
+    Polymer('core-iconset', {
+  
+      /**
+       * The URL of the iconset image.
+       *
+       * @attribute src
+       * @type string
+       * @default ''
+       */
+      src: '',
+
+      /**
+       * The width of the iconset image. This must only be specified if the
+       * icons are arranged into separate rows inside the image.
+       *
+       * @attribute width
+       * @type number
+       * @default 0
+       */
+      width: 0,
+
+      /**
+       * A space separated list of names corresponding to icons in the iconset
+       * image file. This list must be ordered the same as the icon images
+       * in the image file.
+       *
+       * @attribute icons
+       * @type string
+       * @default ''
+       */
+      icons: '',
+
+      /**
+       * The size of an individual icon. Note that icons must be square.
+       *
+       * @attribute iconSize
+       * @type number
+       * @default 24
+       */
+      iconSize: 24,
+
+      /**
+       * The horizontal offset of the icon images in the inconset src image.
+       * This is typically used if the image resource contains additional images
+       * beside those intended for the iconset.
+       *
+       * @attribute offsetX
+       * @type number
+       * @default 0
+       */
+      offsetX: 0,
+      /**
+       * The vertical offset of the icon images in the inconset src image.
+       * This is typically used if the image resource contains additional images
+       * beside those intended for the iconset.
+       *
+       * @attribute offsetY
+       * @type number
+       * @default 0
+       */
+      offsetY: 0,
+      type: 'iconset',
+
+      created: function() {
+        this.iconMap = {};
+        this.iconNames = [];
+        this.themes = {};
+      },
+  
+      ready: function() {
+        // TODO(sorvell): ensure iconset's src is always relative to the main
+        // document
+        if (this.src && (this.ownerDocument !== document)) {
+          this.src = this.resolvePath(this.src, this.ownerDocument.baseURI);
+        }
+        this.super();
+        this.updateThemes();
+      },
+
+      iconsChanged: function() {
+        var ox = this.offsetX;
+        var oy = this.offsetY;
+        this.icons && this.icons.split(/\s+/g).forEach(function(name, i) {
+          this.iconNames.push(name);
+          this.iconMap[name] = {
+            offsetX: ox,
+            offsetY: oy
+          }
+          if (ox + this.iconSize < this.width) {
+            ox += this.iconSize;
+          } else {
+            ox = this.offsetX;
+            oy += this.iconSize;
+          }
+        }, this);
+      },
+
+      updateThemes: function() {
+        var ts = this.querySelectorAll('property[theme]');
+        ts && ts.array().forEach(function(t) {
+          this.themes[t.getAttribute('theme')] = {
+            offsetX: parseInt(t.getAttribute('offsetX')) || 0,
+            offsetY: parseInt(t.getAttribute('offsetY')) || 0
+          };
+        }, this);
+      },
+
+      // TODO(ffu): support retrived by index e.g. getOffset(10);
+      /**
+       * Returns an object containing `offsetX` and `offsetY` properties which
+       * specify the pixel locaion in the iconset's src file for the given
+       * `icon` and `theme`. It's uncommon to call this method. It is useful,
+       * for example, to manually position a css backgroundImage to the proper
+       * offset. It's more common to use the `applyIcon` method.
+       *
+       * @method getOffset
+       * @param {String|Number} icon The name of the icon or the index of the
+       * icon within in the icon image.
+       * @param {String} theme The name of the theme.
+       * @returns {Object} An object specifying the offset of the given icon 
+       * within the icon resource file; `offsetX` is the horizontal offset and
+       * `offsetY` is the vertical offset. Both values are in pixel units.
+       */
+      getOffset: function(icon, theme) {
+        var i = this.iconMap[icon];
+        if (!i) {
+          var n = this.iconNames[Number(icon)];
+          i = this.iconMap[n];
+        }
+        var t = this.themes[theme];
+        if (i && t) {
+          return {
+            offsetX: i.offsetX + t.offsetX,
+            offsetY: i.offsetY + t.offsetY
+          }
+        }
+        return i;
+      },
+
+      /**
+       * Applies an icon to the given element as a css background image. This
+       * method does not size the element, and it's often necessary to set 
+       * the element's height and width so that the background image is visible.
+       *
+       * @method applyIcon
+       * @param {Element} element The element to which the background is
+       * applied.
+       * @param {String|Number} icon The name or index of the icon to apply.
+       * @param {Number} scale (optional, defaults to 1) A scaling factor 
+       * with which the icon can be magnified.
+       * @return {Element} The icon element.
+       */
+      applyIcon: function(element, icon, scale) {
+        var offset = this.getOffset(icon);
+        scale = scale || 1;
+        if (element && offset) {
+          var icon = element._icon || document.createElement('div');
+          var style = icon.style;
+          style.backgroundImage = 'url(' + this.src + ')';
+          style.backgroundPosition = (-offset.offsetX * scale + 'px') + 
+             ' ' + (-offset.offsetY * scale + 'px');
+          style.backgroundSize = scale === 1 ? 'auto' :
+             this.width * scale + 'px';
+          if (icon.parentNode !== element) {
+            element.appendChild(icon);
+          }
+          return icon;
+        }
+      }
+
+    });
+
+  </script>
+
+</polymer-element>
+<polymer-element name="core-icon" attributes="src icon alt" assetpath="bower_components/core-icon/">
+<script>
+(function() {
+  
+  // mono-state
+  var meta;
+  
+  Polymer('core-icon', {
+
+    /**
+     * The URL of an image for the icon. If the src property is specified,
+     * the icon property should not be.
+     *
+     * @attribute src
+     * @type string
+     * @default ''
+     */
+    src: '',
+
+    /**
+     * Specifies the icon name or index in the set of icons available in
+     * the icon's icon set. If the icon property is specified,
+     * the src property should not be.
+     *
+     * @attribute icon
+     * @type string
+     * @default ''
+     */
+    icon: '',
+
+    /**
+     * Alternative text content for accessibility support.
+     * If alt is present and not empty, it will set the element's role to img and add an aria-label whose content matches alt.
+     * If alt is present and is an empty string, '', it will hide the element from the accessibility layer
+     * If alt is not present, it will set the element's role to img and the element will fallback to using the icon attribute for its aria-label.
+     * 
+     * @attribute alt
+     * @type string
+     * @default ''
+     */
+    alt: null,
+
+    observe: {
+      'icon': 'updateIcon',
+      'alt': 'updateAlt'
+    },
+
+    defaultIconset: 'icons',
+
+    ready: function() {
+      if (!meta) {
+        meta = document.createElement('core-iconset');
+      }
+
+      // Allow user-provided `aria-label` in preference to any other text alternative.
+      if (this.hasAttribute('aria-label')) {
+        // Set `role` if it has not been overridden.
+        if (!this.hasAttribute('role')) {
+          this.setAttribute('role', 'img');
+        }
+        return;
+      }
+      this.updateAlt();
+    },
+
+    srcChanged: function() {
+      var icon = this._icon || document.createElement('div');
+      icon.textContent = '';
+      icon.setAttribute('fit', '');
+      icon.style.backgroundImage = 'url(' + this.src + ')';
+      icon.style.backgroundPosition = 'center';
+      icon.style.backgroundSize = '100%';
+      if (!icon.parentNode) {
+        this.appendChild(icon);
+      }
+      this._icon = icon;
+    },
+
+    getIconset: function(name) {
+      return meta.byId(name || this.defaultIconset);
+    },
+
+    updateIcon: function(oldVal, newVal) {
+      if (!this.icon) {
+        this.updateAlt();
+        return;
+      }
+      var parts = String(this.icon).split(':');
+      var icon = parts.pop();
+      if (icon) {
+        var set = this.getIconset(parts.pop());
+        if (set) {
+          this._icon = set.applyIcon(this, icon);
+          if (this._icon) {
+            this._icon.setAttribute('fit', '');
+          }
+        }
+      }
+      // Check to see if we're using the old icon's name for our a11y fallback
+      if (oldVal) {
+        if (oldVal.split(':').pop() == this.getAttribute('aria-label')) {
+          this.updateAlt();
+        }
+      }
+    },
+
+    updateAlt: function() {
+      // Respect the user's decision to remove this element from
+      // the a11y tree
+      if (this.getAttribute('aria-hidden')) {
+        return;
+      }
+
+      // Remove element from a11y tree if `alt` is empty, otherwise
+      // use `alt` as `aria-label`.
+      if (this.alt === '') {
+        this.setAttribute('aria-hidden', 'true');
+        if (this.hasAttribute('role')) {
+          this.removeAttribute('role');
+        }
+        if (this.hasAttribute('aria-label')) {
+          this.removeAttribute('aria-label');
+        }
+      } else {
+        this.setAttribute('aria-label', this.alt ||
+                                        this.icon.split(':').pop());
+        if (!this.hasAttribute('role')) {
+          this.setAttribute('role', 'img');
+        }
+        if (this.hasAttribute('aria-hidden')) {
+          this.removeAttribute('aria-hidden');
+        }
+      }
+    }
+
+  });
+  
+})();
+</script>
+
 </polymer-element>
 
 <polymer-element name="core-iconset-svg" extends="core-meta" attributes="iconSize" assetpath="bower_components/core-iconset-svg/">
@@ -3400,106 +3350,6 @@ core-selector:not(.narrow-layout) ::content [core-drawer-toggle] {
 
 </script>
 </polymer-element>
-<polymer-element name="paper-item" extends="paper-button-base" assetpath="bower_components/paper-item/">
-
-  <template>
-
-    <style>
-
-      :host {
-        display: block;
-        position: relative;
-        font-size: 16px;
-        box-sizing: border-box;
-        min-width: 7em;
-        outline: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        -webkit-user-select: none;
-        user-select: none;
-        cursor: pointer;
-        z-index: 0;
-      }
-
-      :host([disabled]) {
-        color: #a8a8a8;
-        cursor: auto;
-        pointer-events: none;
-      }
-
-      :host(.core-selected) {
-        background-color: #eaeaea;
-      }
-
-      #ripple {
-        pointer-events: none;
-        z-index: -1;
-      }
-
-      .button-content {
-        height: 100%;
-        padding: 0.9em 1em;
-      }
-
-      polyfill-next-selector { content: '.button-content > a'; }
-      ::content > a {
-        height: 100%;
-        /* flex */
-        -ms-flex: 1 1 0.000000001px;
-        -webkit-flex: 1;
-        flex: 1;
-        -webkit-flex-basis: 0.000000001px;
-        flex-basis: 0.000000001px;
-      }
-
-    </style>
-
-    <!-- this div is needed to position the ripple behind text content -->
-    <div class="button-content" relative="" layout="" horizontal="" center="">
-      <content></content>
-    </div>
-
-  </template>
-
-  <script>
-    Polymer('paper-item',{
-
-      publish: {
-
-        /**
-         * If true, the button will be styled with a shadow.
-         *
-         * @attribute raised
-         * @type boolean
-         * @default false
-         */
-        raised: false,
-
-        /**
-         * By default the ripple emanates from where the user touched the button.
-         * Set this to true to always center the ripple.
-         *
-         * @attribute recenteringTouch
-         * @type boolean
-         * @default false
-         */
-        recenteringTouch: false,
-
-        /**
-         * By default the ripple expands to fill the button. Set this to false to
-         * constrain the ripple to a circle within the button.
-         *
-         * @attribute fill
-         * @type boolean
-         * @default true
-         */
-        fill: true
-
-      }
-
-    });
-  </script>
-</polymer-element>
 <polymer-element name="paper-icon-button" extends="paper-button-base" attributes="src icon" role="button" assetpath="bower_components/paper-icon-button/">
 
   <template>
@@ -4007,6 +3857,571 @@ polyfill-next-selector { content: '#tabsContent > *:not(#selectionBar)'; }
 </script>
 </polymer-element>
 
+<polymer-element name="core-xhr" hidden="" assetpath="bower_components/core-ajax/">
+
+  <script>
+
+    Polymer('core-xhr', {
+
+      /**
+       * Sends a HTTP request to the server and returns the XHR object.
+       *
+       * @method request
+       * @param {Object} inOptions
+       *    @param {String} inOptions.url The url to which the request is sent.
+       *    @param {String} inOptions.method The HTTP method to use, default is GET.
+       *    @param {boolean} inOptions.sync By default, all requests are sent asynchronously. To send synchronous requests, set to true.
+       *    @param {Object} inOptions.params Data to be sent to the server.
+       *    @param {Object} inOptions.body The content for the request body for POST method.
+       *    @param {Object} inOptions.headers HTTP request headers.
+       *    @param {String} inOptions.responseType The response type. Default is 'text'.
+       *    @param {boolean} inOptions.withCredentials Whether or not to send credentials on the request. Default is false.
+       *    @param {Object} inOptions.callback Called when request is completed.
+       * @returns {Object} XHR object.
+       */
+      request: function(options) {
+        var xhr = new XMLHttpRequest();
+        var url = options.url;
+        var method = options.method || 'GET';
+        var async = !options.sync;
+        //
+        var params = this.toQueryString(options.params);
+        if (params && method == 'GET') {
+          url += (url.indexOf('?') > 0 ? '&' : '?') + params;
+        }
+        var xhrParams = this.isBodyMethod(method) ? (options.body || params) : null;
+        //
+        xhr.open(method, url, async);
+        if (options.responseType) {
+          xhr.responseType = options.responseType;
+        }
+        if (options.withCredentials) {
+          xhr.withCredentials = true;
+        }
+        this.makeReadyStateHandler(xhr, options.callback);
+        this.setRequestHeaders(xhr, options.headers);
+        xhr.send(xhrParams);
+        if (!async) {
+          xhr.onreadystatechange(xhr);
+        }
+        return xhr;
+      },
+    
+      toQueryString: function(params) {
+        var r = [];
+        for (var n in params) {
+          var v = params[n];
+          n = encodeURIComponent(n);
+          r.push(v == null ? n : (n + '=' + encodeURIComponent(v)));
+        }
+        return r.join('&');
+      },
+
+      isBodyMethod: function(method) {
+        return this.bodyMethods[(method || '').toUpperCase()];
+      },
+      
+      bodyMethods: {
+        POST: 1,
+        PUT: 1,
+        PATCH: 1,
+        DELETE: 1
+      },
+
+      makeReadyStateHandler: function(xhr, callback) {
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState == 4) {
+            callback && callback.call(null, xhr.response, xhr);
+          }
+        };
+      },
+
+      setRequestHeaders: function(xhr, headers) {
+        if (headers) {
+          for (var name in headers) {
+            xhr.setRequestHeader(name, headers[name]);
+          }
+        }
+      }
+
+    });
+
+  </script>
+  
+</polymer-element>
+<polymer-element name="core-ajax" hidden="" attributes="url handleAs auto params response error method headers body contentType withCredentials progress loading" assetpath="bower_components/core-ajax/">
+<script>
+
+  Polymer('core-ajax', {
+    /**
+     * Fired when a response is received.
+     *
+     * @event core-response
+     */
+
+    /**
+     * Fired when an error is received.
+     *
+     * @event core-error
+     */
+
+    /**
+     * Fired whenever a response or an error is received.
+     *
+     * @event core-complete
+     */
+
+    /**
+     * The URL target of the request.
+     *
+     * @attribute url
+     * @type string
+     * @default ''
+     */
+    url: '',
+
+    /**
+     * Specifies what data to store in the `response` property, and
+     * to deliver as `event.response` in `response` events.
+     *
+     * One of:
+     *
+     *    `text`: uses `XHR.responseText`.
+     *
+     *    `xml`: uses `XHR.responseXML`.
+     *
+     *    `json`: uses `XHR.responseText` parsed as JSON.
+     *
+     *    `arraybuffer`: uses `XHR.response`.
+     *
+     *    `blob`: uses `XHR.response`.
+     *
+     *    `document`: uses `XHR.response`.
+     *
+     * @attribute handleAs
+     * @type string
+     * @default 'text'
+     */
+    handleAs: '',
+
+    /**
+     * If true, automatically performs an Ajax request when either `url` or `params` changes.
+     *
+     * @attribute auto
+     * @type boolean
+     * @default false
+     */
+    auto: false,
+
+    /**
+     * Parameters to send to the specified URL, as JSON.
+     *
+     * @attribute params
+     * @type string (JSON)
+     * @default ''
+     */
+    params: '',
+
+    /**
+     * The response for the current request, or null if it hasn't
+     * completed yet or the request resulted in error.
+     *
+     * @attribute response
+     * @type Object
+     * @default null
+     */
+    response: null,
+
+    /**
+     * The error for the current request, or null if it hasn't
+     * completed yet or the request resulted in success.
+     *
+     * @attribute error
+     * @type Object
+     * @default null
+     */
+    error: null,
+
+    /**
+     * Whether the current request is currently loading.
+     *
+     * @attribute loading
+     * @type boolean
+     * @default false
+     */
+    loading: false,
+
+    /**
+     * The progress of the current request.
+     *
+     * @attribute progress
+     * @type {loaded: number, total: number, lengthComputable: boolean}
+     * @default {}
+     */
+    progress: null,
+
+    /**
+     * The HTTP method to use such as 'GET', 'POST', 'PUT', or 'DELETE'.
+     * Default is 'GET'.
+     *
+     * @attribute method
+     * @type string
+     * @default ''
+     */
+    method: '',
+
+    /**
+     * HTTP request headers to send.
+     *
+     * Example:
+     *
+     *     <core-ajax
+     *         auto
+     *         url="http://somesite.com"
+     *         headers='{"X-Requested-With": "XMLHttpRequest"}'
+     *         handleAs="json"
+     *         on-core-response="{{handleResponse}}"></core-ajax>
+     *
+     * @attribute headers
+     * @type Object
+     * @default null
+     */
+    headers: null,
+
+    /**
+     * Optional raw body content to send when method === "POST".
+     *
+     * Example:
+     *
+     *     <core-ajax method="POST" auto url="http://somesite.com"
+     *         body='{"foo":1, "bar":2}'>
+     *     </core-ajax>
+     *
+     * @attribute body
+     * @type Object
+     * @default null
+     */
+    body: null,
+
+    /**
+     * Content type to use when sending data.
+     *
+     * @attribute contentType
+     * @type string
+     * @default 'application/x-www-form-urlencoded'
+     */
+    contentType: 'application/x-www-form-urlencoded',
+
+    /**
+     * Set the withCredentials flag on the request.
+     *
+     * @attribute withCredentials
+     * @type boolean
+     * @default false
+     */
+    withCredentials: false,
+
+    /**
+     * Additional properties to send to core-xhr.
+     *
+     * Can be set to an object containing default properties
+     * to send as arguments to the `core-xhr.request()` method
+     * which implements the low-level communication.
+     *
+     * @property xhrArgs
+     * @type Object
+     * @default null
+     */
+    xhrArgs: null,
+
+    created: function() {
+      this.progress = {};
+    },
+
+    ready: function() {
+      this.xhr = document.createElement('core-xhr');
+    },
+
+    receive: function(response, xhr) {
+      if (this.isSuccess(xhr)) {
+        this.processResponse(xhr);
+      } else {
+        this.processError(xhr);
+      }
+      this.complete(xhr);
+    },
+
+    isSuccess: function(xhr) {
+      var status = xhr.status || 0;
+      return !status || (status >= 200 && status < 300);
+    },
+
+    processResponse: function(xhr) {
+      var response = this.evalResponse(xhr);
+      if (xhr === this.activeRequest) {
+        this.response = response;
+      }
+      this.fire('core-response', {response: response, xhr: xhr});
+    },
+
+    processError: function(xhr) {
+      var response = xhr.status + ': ' + xhr.responseText;
+      if (xhr === this.activeRequest) {
+        this.error = response;
+      }
+      this.fire('core-error', {response: response, xhr: xhr});
+    },
+
+    processProgress: function(progress, xhr) {
+      if (xhr !== this.activeRequest) {
+        return;
+      }
+      // We create a proxy object here because these fields
+      // on the progress event are readonly properties, which
+      // causes problems in common use cases (e.g. binding to
+      // <paper-progress> attributes).
+      var progressProxy = {
+        lengthComputable: progress.lengthComputable,
+        loaded: progress.loaded,
+        total: progress.total
+      }
+      this.progress = progressProxy;
+    },
+
+    complete: function(xhr) {
+      if (xhr === this.activeRequest) {
+        this.loading = false;
+      }
+      this.fire('core-complete', {response: xhr.status, xhr: xhr});
+    },
+
+    evalResponse: function(xhr) {
+      return this[(this.handleAs || 'text') + 'Handler'](xhr);
+    },
+
+    xmlHandler: function(xhr) {
+      return xhr.responseXML;
+    },
+
+    textHandler: function(xhr) {
+      return xhr.responseText;
+    },
+
+    jsonHandler: function(xhr) {
+      var r = xhr.responseText;
+      try {
+        return JSON.parse(r);
+      } catch (x) {
+        console.warn('core-ajax caught an exception trying to parse response as JSON:');
+        console.warn('url:', this.url);
+        console.warn(x);
+        return r;
+      }
+    },
+
+    documentHandler: function(xhr) {
+      return xhr.response;
+    },
+
+    blobHandler: function(xhr) {
+      return xhr.response;
+    },
+
+    arraybufferHandler: function(xhr) {
+      return xhr.response;
+    },
+
+    urlChanged: function() {
+      if (!this.handleAs) {
+        var ext = String(this.url).split('.').pop();
+        switch (ext) {
+          case 'json':
+            this.handleAs = 'json';
+            break;
+        }
+      }
+      this.autoGo();
+    },
+
+    paramsChanged: function() {
+      this.autoGo();
+    },
+
+    bodyChanged: function() {
+      this.autoGo();
+    },
+
+    autoChanged: function() {
+      this.autoGo();
+    },
+
+    // TODO(sorvell): multiple side-effects could call autoGo
+    // during one micro-task, use a job to have only one action
+    // occur
+    autoGo: function() {
+      if (this.auto) {
+        this.goJob = this.job(this.goJob, this.go, 0);
+      }
+    },
+
+    /**
+     * Performs an Ajax request to the specified URL.
+     *
+     * @method go
+     */
+    go: function() {
+      var args = this.xhrArgs || {};
+      // TODO(sjmiles): we may want XHR to default to POST if body is set
+      args.body = this.body || args.body;
+      args.params = this.params || args.params;
+      if (args.params && typeof(args.params) == 'string') {
+        args.params = JSON.parse(args.params);
+      }
+      args.headers = this.headers || args.headers || {};
+      if (args.headers && typeof(args.headers) == 'string') {
+        args.headers = JSON.parse(args.headers);
+      }
+      var hasContentType = Object.keys(args.headers).some(function (header) {
+        return header.toLowerCase() === 'content-type';
+      });
+      if (!hasContentType && this.contentType) {
+        args.headers['Content-Type'] = this.contentType;
+      }
+      if (this.handleAs === 'arraybuffer' || this.handleAs === 'blob' ||
+          this.handleAs === 'document') {
+        args.responseType = this.handleAs;
+      }
+      args.withCredentials = this.withCredentials;
+      args.callback = this.receive.bind(this);
+      args.url = this.url;
+      args.method = this.method;
+
+      this.response = this.error = this.progress = null;
+      this.activeRequest = args.url && this.xhr.request(args);
+      if (this.activeRequest) {
+        this.loading = true;
+        var activeRequest = this.activeRequest;
+        // IE < 10 doesn't support progress events.
+        if ('onprogress' in activeRequest) {
+          this.activeRequest.addEventListener(
+              'progress',
+              function(progress) {
+                this.processProgress(progress, activeRequest);
+              }.bind(this), false);
+        } else {
+          this.progress = {
+            lengthComputable: false,
+          }
+        }
+      }
+      return this.activeRequest;
+    }
+
+  });
+
+</script>
+</polymer-element>
+
+<polymer-element name="paper-item" extends="paper-button-base" assetpath="bower_components/paper-item/">
+
+  <template>
+
+    <style>
+
+      :host {
+        display: block;
+        position: relative;
+        font-size: 16px;
+        box-sizing: border-box;
+        min-width: 7em;
+        outline: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -webkit-user-select: none;
+        user-select: none;
+        cursor: pointer;
+        z-index: 0;
+      }
+
+      :host([disabled]) {
+        color: #a8a8a8;
+        cursor: auto;
+        pointer-events: none;
+      }
+
+      :host(.core-selected) {
+        background-color: #eaeaea;
+      }
+
+      #ripple {
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      .button-content {
+        height: 100%;
+        padding: 0.9em 1em;
+      }
+
+      polyfill-next-selector { content: '.button-content > a'; }
+      ::content > a {
+        height: 100%;
+        /* flex */
+        -ms-flex: 1 1 0.000000001px;
+        -webkit-flex: 1;
+        flex: 1;
+        -webkit-flex-basis: 0.000000001px;
+        flex-basis: 0.000000001px;
+      }
+
+    </style>
+
+    <!-- this div is needed to position the ripple behind text content -->
+    <div class="button-content" relative="" layout="" horizontal="" center="">
+      <content></content>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer('paper-item',{
+
+      publish: {
+
+        /**
+         * If true, the button will be styled with a shadow.
+         *
+         * @attribute raised
+         * @type boolean
+         * @default false
+         */
+        raised: false,
+
+        /**
+         * By default the ripple emanates from where the user touched the button.
+         * Set this to true to always center the ripple.
+         *
+         * @attribute recenteringTouch
+         * @type boolean
+         * @default false
+         */
+        recenteringTouch: false,
+
+        /**
+         * By default the ripple expands to fill the button. Set this to false to
+         * constrain the ripple to a circle within the button.
+         *
+         * @attribute fill
+         * @type boolean
+         * @default true
+         */
+        fill: true
+
+      }
+
+    });
+  </script>
+</polymer-element>
 <polymer-element name="paper-shadow" assetpath="bower_components/paper-shadow/">
 
 <template>
@@ -4057,7 +4472,7 @@ polyfill-next-selector { content: '#tabsContent > *:not(#selectionBar)'; }
 
   });
 </script>
-</polymer-element><polymer-element name="link-card" extends="paper-item" assetpath="elements/">
+</polymer-element><polymer-element name="link-card" extends="paper-item" attributes="flag" on-click="onClick" assetpath="elements/">
 	<template>
 
     <style>
@@ -4065,7 +4480,6 @@ polyfill-next-selector { content: '#tabsContent > *:not(#selectionBar)'; }
         display: block;
         position: relative;
         background-color: white;
-        /*padding: 20px;*/
         width: 100%;
         font-size: 1.2rem;
         font-weight: 300;
@@ -4074,18 +4488,18 @@ polyfill-next-selector { content: '#tabsContent > *:not(#selectionBar)'; }
         margin: 20px;
       }
       .card-header {
-        /*margin-bottom: 10px;*/
         padding: 20px;
       }
 
-      polyfill-next-selector { content: '.card-header h2'; }
+      polyfill-next-selector { content: '.card-header a'; }
 
-      .card-header ::content h2 {
+      .card-header ::content a {
         color: #003057;
         margin: 0;
         font-size: 1.8rem;
         font-weight: 300;
         margin-left: 1em;
+        text-decoration: none;
       }
 
       polyfill-next-selector { content: '.card-header img'; }
@@ -4097,215 +4511,282 @@ polyfill-next-selector { content: '#tabsContent > *:not(#selectionBar)'; }
       }
 
       paper-ripple {
-        /*color: #46ba95;*/
+        color: #46ba95;
+      }
+
+      #flag {
+        width: 70px;
+        height: 70px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: 50%;
       }
     </style>
 
     <paper-shadow class="card-header" layout="" horizontal="" center="">
-      <!-- <content select="img"></content> -->
-      <div class="flag"></div>
-      <content select="h2"></content>
+      <div id="flag" style="background-image: url({{flagbase}}{{flag}});"></div>
+      <content select="a" id="link"></content>
     </paper-shadow>
-    <content></content>
   </template>
 
 	<script>
-  	Polymer('link-card',{});
+  (function() {
 
-  	// setup stuff
+  	Polymer('link-card',{
+      flag: 'intl.png',
+      flagbase: "deploy-assets/flags/",
+
+      ready: function() {
+        // this.$.flag.style.backgroundImage = 'url("' + flagbase + this.flag + '")';
+      },
+      onClick: function(event) {
+        var a = this.querySelector('a');
+        if (!a || !a.href) return;
+        window.location = a.href;
+      }
+    });
+  }());
+  </script>
+</polymer-element><polymer-element name="deploy-app" attributes="manifest" assetpath="elements/">&gt;
+
+  <template>
+    <core-ajax id="ajax" auto="" url="{{manifest}}" handleas="json" on-core-response="{{manifestLoaded}}"></core-ajax>
+
+    <content></content>
+  </template>
+  <script>
+    (function() {
+      function capitalize(str) {
+        var split = str.split(' ');
+        for (var i = 0; i < split.length; i++) {
+          var s = split[i];
+          split[i] = s[0].toUpperCase() + s.substr(1);
+        }
+        return split.join(' ');
+      }
+
+
+      var marketsData = {
+        "de": {
+          name: "De",
+          flag: "de.png"
+        },
+        "fr": {
+          name: "Fr",
+          flag: "fr.png"
+        },
+        "intl": {
+          name: "Intl",
+          flag: "intl.png"
+        },
+        "ca": {
+          name: "Ca",
+          flag: "ca.png"
+        },
+        "uk": {
+          name: "Uk",
+          flag: "uk.png"
+        },
+        "us": {
+          name: "Us",
+          flag: "us.png"
+        },
+        "zh-cn": {
+          name: "China",
+          flag: "cn.png"
+        },
+        "au": {
+          name: "Au",
+          flag: "au.png"
+        },
+        "at": {
+          name: "At",
+          flag: "at.png"
+        }
+      };
+
+
+      Polymer('deploy-app',{
+        ___selectedConfiguratorType: null,
+
+        manifestLoaded: function(event) {
+          this.manifest = event.detail.response;
+
+          this.setup(this.manifest);
+        },
+
+        setup: function(manifest) {
+          var $menu = $(this.querySelector('#configurator-type-menu'));
+          var $mainTitle = $(this.querySelector('#main-title'));
+
+          // Set title
+          $mainTitle.html('Deploy - ' + manifest.version);
+
+          var configuratorTypes = manifest.configuratorTypes;
+          var first = null;
+
+          for (var configuratorType in configuratorTypes) {
+            var $menuItem = $(Polymer.createDOM('paper-item', capitalize(configuratorType), {
+              'data-configurator-type-link': true,
+              'data-type': configuratorType
+            }));
+
+            $menuItem.click($.proxy(this.menuLinkClicked, this));
+            $menu.append($menuItem);
+
+            this.setupConfiguratorType(configuratorType, configuratorTypes[configuratorType]);
+
+            first = first || configuratorType;
+          }
+
+          this.setSectionActive(first);
+
+          $('#drawerPanel').on('core-responsive-change', function() {
+            $('#navicon').get(0).hidden = !$('#drawerPanel').get(0).narrow;
+          });
+          $('#navicon').get(0).hidden = !$('#drawerPanel').get(0).narrow;
+
+          $('#navicon').on('click', function() {
+            $('#drawerPanel').get(0).togglePanel();
+          });
+        },
+
+        setupConfiguratorType: function(type, configuratorModes) {
+          var self = this;
+
+          var $container = $(this.querySelector('#content-container'));
+
+          var $configuratorTypeSection = $(Polymer.createDOM('section', '', {
+            'data-configurator-type-content': true,
+            'data-type': type
+          }));
+
+          $container.append($configuratorTypeSection);
+
+          var $tabs = $(Polymer.createDOM('paper-tabs', '', {
+            selected: 0
+          }));
+          $configuratorTypeSection.append($tabs);
+
+          $.each(configuratorModes, function(mode, countries) {
+
+            // Create configurator mode tab
+            var $tab = $(Polymer.createDOM('paper-tab', capitalize(mode), {
+              'data-mode-tab': true,
+              'data-type': mode
+            }));
+            $tab.click($.proxy(self.tabClicked, self));
+            $tabs.append($tab);
+
+
+            var $modeSection = $(Polymer.createDOM('section', '', {
+              'data-tab-content': true,
+              'data-type': mode
+            }));
+            $configuratorTypeSection.append($modeSection);
+
+            // Create link cards
+            $.each(countries, function(name, link) {
+              var marketData = marketsData[name] || {
+                name: name
+              };
+
+              var $card = $(Polymer.createDOM(
+                'link-card',
+                '<a href="{href}">{name}</a>'.replace('{href}', link).replace('{name}', marketData.name),
+                {
+                  flag: marketData.flag
+                }));
+              $modeSection.append($card);
+            });
+
+          });
+        },
+
+        setSectionActive: function(configuratorType, configuratorMode) {
+          var $menu = $(this.querySelector('#configurator-type-menu'));
+          var $links = $menu.find('[data-configurator-type-link]');
+
+          $(this.querySelector('[data-configurator-type-content].selected')).removeClass('selected');
+
+          configuratorType = configuratorType || this.___selectedConfiguratorType;
+          var $content = $(this.querySelector('[data-configurator-type-content][data-type="' + configuratorType + '"]'));
+          $content.addClass('selected');
+
+          var $modeSections = $content.find('[data-tab-content]');
+          $modeSections.hide();
+
+          if (!configuratorMode) {
+            configuratorMode = $modeSections.first().attr('data-type');
+          }
+
+          $modeSections.filter('[data-type="' + configuratorMode + '"]').show();
+
+          this.___selectedConfiguratorType = configuratorType;
+          this.___selectedConfiguratorMode = configuratorMode;
+        },
+
+        tabClicked: function(event) {
+          var $target = $(event.target);
+          var type = $target.attr('data-type');
+
+          this.setSectionActive(null, type);
+        },
+
+        menuLinkClicked: function(event) {
+          var $target = $(event.target);
+          var type = $target.attr('data-type');
+
+          this.setSectionActive(type);
+        }
+      });
+
+    }());
   </script>
 </polymer-element></div>
+	<deploy-app manifest="markets-data.json">
 	
 		<core-drawer-panel id="drawerPanel">
-
 		  <core-header-panel drawer="">
 		    <core-toolbar id="navheader">
 		      <span>Configurator Type</span>
 		    </core-toolbar>
-		    <core-menu selected="0" selectedattribute="">
-		      <paper-item data-configurator="" data-type="chanel">Chanel</paper-item>
-		      <paper-item data-configurator="" data-type="next">Next</paper-item>
-		      <paper-item data-configurator="" data-type="showroom">Showroom</paper-item>
+
+		    <core-menu id="configurator-type-menu" selected="0" selectedattribute="">
+		    	<!-- <paper-item data-configurator-type-link data-type="chanel">Chanel</p></paper-item> -->
 		    </core-menu>
+
 		   </core-header-panel>
 
 		  <core-header-panel main="">
 		    <core-toolbar id="mainheader">
 		      <paper-icon-button id="navicon" icon="menu"></paper-icon-button>
-		      <span flex="">Deploy - VBS 4.30</span>
+		      <span id="main-title" flex=""></span>
 		    </core-toolbar>
 
 
-		    <div class="content-container">
+		    <div id="content-container">
 		      
-					<div data-configurator-type="" data-type="chanel">
+					<!-- <div data-configurator-type-content data-type="chanel">
 
 						<paper-tabs selected="0">
-							<paper-tab data-version-tab="" data-type="driveline">Drivline</paper-tab>
-							<paper-tab data-version-tab="" data-type="kompass">Kompass</paper-tab>
+							<paper-tab data-version-tab data-type="driveline">Drivline</paper-tab>
 						</paper-tabs>
 
-						<section data-tab-content="" data-type="driveline">
-
-						
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/de.gif" alt="">
-								<h2>De</h2>
-							</link-card>
-
-
-
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/fr.gif" alt="">
-								<h2>Fr</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/intl.png" alt="">
-								<h2>Intl</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/ca.gif" alt="">
-								<h2>Ca</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/us.gif" alt="">
-								<h2>Us</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/uk.gif" alt="">
-								<h2>Uk</h2>
+						<section data-tab-content data-type="driveline">
+							<link-card fill="true" flag="de.gif">
+								<a href="#">De</a>
 							</link-card>
 						</section>
-
-						<section data-tab-content="" data-type="kompass">
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/de.gif" alt="">
-								<h2>De</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/fr.gif" alt="">
-								<h2>Fr</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/uk.gif" alt="">
-								<h2>Uk</h2>
-							</link-card>
-						</section>
-					</div>
-
-					<div data-configurator-type="" data-type="next">
-
-						<paper-tabs selected="0">
-							<paper-tab data-version-tab="" data-type="version">Version</paper-tab>
-							<paper-tab data-version-tab="" data-type="driveline">Drivline</paper-tab>
-							<paper-tab data-version-tab="" data-type="kompass">Kompass</paper-tab>
-						</paper-tabs>
-
-						<section data-tab-content="" data-type="version">
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/de.gif" alt="">
-								<h2>De</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/fr.gif" alt="">
-								<h2>Fr</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/intl.png" alt="">
-								<h2>Intl</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/us.gif" alt="">
-								<h2>Us</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/uk.gif" alt="">
-								<h2>Uk</h2>
-							</link-card>
-						</section>
-
-						<section data-tab-content="" data-type="driveline">
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/de.gif" alt="">
-								<h2>De</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/fr.gif" alt="">
-								<h2>Fr</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/intl.png" alt="">
-								<h2>Intl</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/ca.gif" alt="">
-								<h2>Ca</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/us.gif" alt="">
-								<h2>Us</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/uk.gif" alt="">
-								<h2>Uk</h2>
-							</link-card>
-						</section>
-
-						<section data-tab-content="" data-type="kompass">
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/de.gif" alt="">
-								<h2>De</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/fr.gif" alt="">
-								<h2>Fr</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/uk.gif" alt="">
-								<h2>Uk</h2>
-							</link-card>
-						</section>
-					</div>
-
-					<div data-configurator-type="" data-type="showroom">
-
-						<paper-tabs selected="0">
-							<paper-tab data-version-tab="" data-type="version">Version</paper-tab>
-						</paper-tabs>
-
-						<section data-tab-content="" data-type="version">
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/de.gif" alt="">
-								<h2>De</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/fr.gif" alt="">
-								<h2>Fr</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/intl.png" alt="">
-								<h2>Intl</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/us.gif" alt="">
-								<h2>Us</h2>
-							</link-card>
-							<link-card fill="true">
-								<img width="70" height="70" src="flags/uk.gif" alt="">
-								<h2>Uk</h2>
-							</link-card>
-						</section>
-					</div>
+					</div> -->
 
 		    </div>
-
-
 
 		  </core-header-panel>
 
 		</core-drawer-panel>
+	</deploy-app>
 
-	<script src="bower_components/jquery/dist/jquery.js"></script>
-	<script src="scripts/main.js"></script>
+	<script src="../deploy-assets/libs/jquery.js"></script>
 
 </body></html>

@@ -1,7 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
-<!-- <link rel="import" href="../bower_components/paper-riple/paper-riple.html"> -->
 
 <polymer-element name="link-card" extends="paper-item" attributes="flag" on-click="onClick">
 	<template>
@@ -55,7 +54,7 @@
     </style>
 
     <paper-shadow class="card-header" layout horizontal center>
-      <div id="flag"></div>
+      <div id="flag" style="background-image: url({{flagbase}}{{flag}});"></div>
       <content select="a" id="link"></content>
     </paper-shadow>
   </template>
@@ -63,15 +62,17 @@
 	<script>
   (function() {
 
-    var flagbase = "flags/";
-
   	Polymer({
+      flag: 'intl.png',
+      flagbase: "deploy-assets/flags/",
+
       ready: function() {
-        this.$.flag.style.backgroundImage = 'url("' + flagbase + this.flag + '")';
+        // this.$.flag.style.backgroundImage = 'url("' + flagbase + this.flag + '")';
       },
       onClick: function(event) {
         var a = this.querySelector('a');
         if (!a || !a.href) return;
+        window.location = a.href;
       }
     });
   }());

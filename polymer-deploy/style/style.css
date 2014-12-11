@@ -14,18 +14,20 @@ body {
 }
 
 core-header-panel[drawer] {
-  background-color: #d6d2c4;
+  background-color: #ececec;
+  /*background-color: #d6d2c4;*/
   color: #003057;
 }
 core-header-panel[drawer] paper-item.core-selected {
   /*background: #5b7f95;*/
-  background-color: #d6d2c4;
+  /*background-color: #d6d2c4;*/
   font-weight: bold;
 }
 
 
 core-header-panel[main] {
-  background-color: #ececec;
+  /*background-color: #ececec;*/
+  background-color: white;
 }
 
 .content {
@@ -33,14 +35,22 @@ core-header-panel[main] {
 }
 
 
-paper-tabs::shadow #selectionBar {
+ paper-tabs::shadow #selectionBar {
   background-color: #e87722;
 }
 
 paper-tabs paper-tab::shadow #ink {
   color: #e87722;
-}
+} 
 
 paper-tabs paper-tab.core-selected {
   font-weight: bold;
+}
+
+
+[data-configurator-type-content].selected {
+  display: block;
+}
+[data-configurator-type-content] {
+  display: none;
 }

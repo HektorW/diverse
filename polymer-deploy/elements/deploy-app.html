@@ -1,7 +1,14 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+
 <link rel="import" href="../bower_components/core-ajax/core-ajax.html">
 
+<link rel="import" href="../bower_components/paper-tabs/paper-tab.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+
+<link rel="import" href="link-card.html">
+
 <polymer-element name="deploy-app" attributes="manifest">>
+
   <template>
     <core-ajax
       id="ajax"
@@ -25,63 +32,178 @@
       }
 
 
-      var markets = {
+      var marketsData = {
         "de": {
           name: "De",
-          flag: "de.gif"
+          flag: "de.png"
         },
         "fr": {
           name: "Fr",
-          flag: "fr.gif"
+          flag: "fr.png"
         },
         "intl": {
           name: "Intl",
-          flag: "intl.gif"
+          flag: "intl.png"
         },
         "ca": {
           name: "Ca",
-          flag: "ca.gif"
+          flag: "ca.png"
         },
         "uk": {
           name: "Uk",
-          flag: "uk.gif"
+          flag: "uk.png"
         },
         "us": {
           name: "Us",
-          flag: "us.gif"
+          flag: "us.png"
+        },
+        "zh-cn": {
+          name: "China",
+          flag: "cn.png"
+        },
+        "au": {
+          name: "Au",
+          flag: "au.png"
+        },
+        "at": {
+          name: "At",
+          flag: "at.png"
         }
       };
 
 
       Polymer({
-        manifestLoaded: function(event) {
-          var manifest = event.detail.response;
+        ___selectedConfiguratorType: null,
 
-          this.setup(manifest);
+        manifestLoaded: function(event) {
+          this.manifest = event.detail.response;
+
+          this.setup(this.manifest);
         },
 
         setup: function(manifest) {
-          var menu = this.querySelector('#configurator-type-menu');
-          var mainTitle = this.querySelector('#main-title');
+          var $menu = $(this.querySelector('#configurator-type-menu'));
+          var $mainTitle = $(this.querySelector('#main-title'));
 
           // Set title
-          mainTitle.innerHTML = 'Deploy - ' + manifest.version;
+          $mainTitle.html('Deploy - ' + manifest.version);
 
           var configuratorTypes = manifest.configuratorTypes;
+          var first = null;
 
           for (var configuratorType in configuratorTypes) {
-            var menuItem = Polymer.createDOM('paper-item', capitalize(configuratorType), {
-              'data-configurator': true,
+            var $menuItem = $(Polymer.createDOM('paper-item', capitalize(configuratorType), {
+              'data-configurator-type-link': true,
               'data-type': configuratorType
-            });
-            menu.appendChild(menuItem);
+            }));
+
+            $menuItem.click($.proxy(this.menuLinkClicked, this));
+            $menu.append($menuItem);
 
             this.setupConfiguratorType(configuratorType, configuratorTypes[configuratorType]);
+
+            first = first || configuratorType;
           }
+
+          this.setSectionActive(first);
+
+          $('#drawerPanel').on('core-responsive-change', function() {
+            $('#navicon').get(0).hidden = !$('#drawerPanel').get(0).narrow;
+          });
+          $('#navicon').get(0).hidden = !$('#drawerPanel').get(0).narrow;
+
+          $('#navicon').on('click', function() {
+            $('#drawerPanel').get(0).togglePanel();
+          });
         },
 
-        setupConfiguratorType: function(type, data) {
+        setupConfiguratorType: function(type, configuratorModes) {
+          var self = this;
 
+          var $container = $(this.querySelector('#content-container'));
+
+          var $configuratorTypeSection = $(Polymer.createDOM('section', '', {
+            'data-configurator-type-content': true,
+            'data-type': type
+          }));
+
+          $container.append($configuratorTypeSection);
+
+          var $tabs = $(Polymer.createDOM('paper-tabs', '', {
+            selected: 0
+          }));
+          $configuratorTypeSection.append($tabs);
+
+          $.each(configuratorModes, function(mode, countries) {
+
+            // Create configurator mode tab
+            var $tab = $(Polymer.createDOM('paper-tab', capitalize(mode), {
+              'data-mode-tab': true,
+              'data-type': mode
+            }));
+            $tab.click($.proxy(self.tabClicked, self));
+            $tabs.append($tab);
+
+
+            var $modeSection = $(Polymer.createDOM('section', '', {
+              'data-tab-content': true,
+              'data-type': mode
+            }));
+            $configuratorTypeSection.append($modeSection);
+
+            // Create link cards
+            $.each(countries, function(name, link) {
+              var marketData = marketsData[name] || {
+                name: name
+              };
+
+              var $card = $(Polymer.createDOM(
+                'link-card',
+                '<a href="{href}">{name}</a>'.replace('{href}', link).replace('{name}', marketData.name),
+                {
+                  flag: marketData.flag
+                }));
+              $modeSection.append($card);
+            });
+
+          });
+        },
+
+        setSectionActive: function(configuratorType, configuratorMode) {
+          var $menu = $(this.querySelector('#configurator-type-menu'));
+          var $links = $menu.find('[data-configurator-type-link]');
+
+          $(this.querySelector('[data-configurator-type-content].selected')).removeClass('selected');
+
+          configuratorType = configuratorType || this.___selectedConfiguratorType;
+          var $content = $(this.querySelector('[data-configurator-type-content][data-type="' + configuratorType + '"]'));
+          $content.addClass('selected');
+
+          var $modeSections = $content.find('[data-tab-content]');
+          $modeSections.hide();
+
+          if (!configuratorMode) {
+            configuratorMode = $modeSections.first().attr('data-type');
+          }
+
+          $modeSections.filter('[data-type="' + configuratorMode + '"]').show();
+
+          this.___selectedConfiguratorType = configuratorType;
+          this.___selectedConfiguratorMode = configuratorMode;
+        },
+
+        tabClicked: function(event) {
+          var $target = $(event.target);
+          var type = $target.attr('data-type');
+
+          this.setSectionActive(null, type);
+        },
+
+        menuLinkClicked: function(event) {
+          var $target = $(event.target);
+          var type = $target.attr('data-type');
+
+          this.setSectionActive(type);
         }
       });
 
