@@ -112,9 +112,13 @@
           });
           $('#navicon').get(0).hidden = !$('#drawerPanel').get(0).narrow;
 
-          $('#navicon').on('click', function() {
-            $('#drawerPanel').get(0).togglePanel();
-          });
+          $('#navicon').on('click', $.proxy(function() {
+            this.toggleMenuPanel();
+          }, this));
+        },
+
+        toggleMenuPanel: function() {
+            this.querySelector('#drawerPanel').togglePanel();
         },
 
         setupConfiguratorType: function(type, configuratorModes) {

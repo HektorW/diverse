@@ -14,8 +14,8 @@
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
 	<style shim-shadowdom>
-			body { font-family: sans-serif; }
-
+		body { font-family: sans-serif; }
+		
 		#navheader { background-color: rgb(51, 51, 51); color: white; }
 
 		#mainheader { background-color: #003057; color: white; }
@@ -39,20 +39,20 @@
 
 	<script src="../deploy-assets/libs/webcomponents.min.js"></script>
 
-	<link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
-	<link rel="import" href="bower_components/core-menu/core-menu.html">
-	<link rel="import" href="bower_components/core-header-panel/core-header-panel.html">
-	<link rel="import" href="bower_components/core-drawer-panel/core-drawer-panel.html">
+	<link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">
+	<link rel="import" href="../bower_components/core-menu/core-menu.html">
+	<link rel="import" href="../bower_components/core-header-panel/core-header-panel.html">
+	<link rel="import" href="../bower_components/core-drawer-panel/core-drawer-panel.html">
 
-	<link rel="import" href="bower_components/core-icons/core-icons.html">
+	<link rel="import" href="../bower_components/core-icons/core-icons.html">
 
-	<link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
-	<link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
+	<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+	<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
 
-	<link rel="import" href="elements/deploy-app.html">
+	<link rel="import" href="../elements/deploy-app.html">
 </head>
 <body fullbleed vertical layout unresolved>
-	<deploy-app manifest="markets-data.json">
+	<deploy-app manifest="../deploy-assets/markets-data.json">
 	
 		<core-drawer-panel id="drawerPanel">
 		  <core-header-panel drawer>
@@ -95,6 +95,6 @@
 		</core-drawer-panel>
 	</deploy-app>
 
-	<script src="../deploy-assets/libs/jquery.js"></script>
+	<script src="../deploy-assets/libs/jquery.min.js"></script>
 </body>
 </html>
