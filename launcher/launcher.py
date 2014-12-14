@@ -1,48 +1,56 @@
 
-import http.server
-import time
+import string
+import json
+import itertools
 
-IP = ''
-PORT = 8000
-
-
-class LauncherRequestHandler(http.server.BaseHTTPRequestHandler):
-
-	def do_GET(self): 
-		print('GET')
-		print('---', self.client_address)
-		print('---', self.path)
-		self.send_response(200)
-		self.send_header("Content-Type", "text/plain")
-		self.end_headers()
-		self.sendString("Hello world")
+from ctypes import windll
+from os import path
+from subprocess import call
+from collections import defaultdict
 
 
-	def sendString(self, str):
-		self.wfile.write(bytes(str, "UTF-8"))
+SCAN_FILE = 'scan.json'
+
+DIR_LEADS = [
+	'program files',
+	'program files (x86)',
+	'games',
+	'starcraft 2',
+	'starcraft ii'
+]
 
 
+def read_scan_file():
+	data = defaultdict(lambda: None)
+
+	if path.isfile(SCAN_FILE):
+
+		with open(SCAN_FILE, 'r') as f:
+			try:
+				data = json.load(f)
+			except e: #ValueError
+				print("Invalid JSON: ", e)
+				pass
+
+	return data
 
 
-def run(server=http.server.HTTPServer, handler=http.server.BaseHTTPRequestHandler):
-	address = (IP, PORT)
-	httpd = server(address, handler)
-	print(time.asctime(), "Server starts - %s:%s" % address)
-	try:
-		httpd.serve_forever()
-	except KeyboardInterrupt:
-		pass
-	httpd.server_close()
-	print(time.asctime(), "Server stops - %s:%s" % address)
+def get_drives():
+	DRIVE_FIXED = 3
+	drives = []
+	for letter in string.ascii_uppercase:
+		drive = '%s:/' % letter
+		if windll.kernel32.GetDriveTypeW(drive) is DRIVE_FIXED:
+			drives.append(drive)
+	return drives
 
 
+def scan(file_name, leads=DIR_LEADS):
+	drives = get_drives()
+	for drive in drives:
+		for lead in leads:
+			dirn = path.join(drive, lead)
+			print(dirn, path.isdir(dirn))
 
-# not related to anything else, but whatevs
-def fuzzySearch(strings, query):
-	matches = [string for string in strings if re.search(".*?".join(query), strings)]
-	return matches
 
-
-
-if __name__ == '__main__':
-	run(http.server.HTTPServer, LauncherRequestHandler)
+scan('starcraft')
