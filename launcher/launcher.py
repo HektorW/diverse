@@ -2,6 +2,7 @@
 import string
 import json
 import itertools
+import os
 
 from ctypes import windll
 from os import path
@@ -45,12 +46,20 @@ def get_drives():
 	return drives
 
 
-def scan(file_name, leads=DIR_LEADS):
+def scan(search, base, folders):
+	for lead in leads:
+		dirname = path.join(drive, lead)
+
+def scan_drives(search, leads=DIR_LEADS):
 	drives = get_drives()
 	for drive in drives:
-		for lead in leads:
-			dirn = path.join(drive, lead)
-			print(dirn, path.isdir(dirn))
+		for index, lead in enumerate(leads):
 
 
-scan('starcraft')
+def start_process(data, name):
+	if name in data:
+		call(data[name])
+
+
+# scan('starcraft ii')
+print(os.stat('d:/games/starcraft ii/starcraft ii.exe'))
