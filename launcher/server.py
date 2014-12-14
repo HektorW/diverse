@@ -1,22 +1,28 @@
 
-import launcher
+from launcher import Launcher
 import http.server
 import time
 
 IP = ''
-PORT = 8000
+PORT = 7202
+
+
+launcher = Launcher()
 
 
 class LauncherRequestHandler(http.server.BaseHTTPRequestHandler):
 
 	def do_GET(self): 
-		print('GET')
-		print('---', self.client_address)
-		print('---', self.path)
+		# print('GET')
+		# print('---', self.client_address)
+		# print('---', self.path)
 		self.send_response(200)
 		self.send_header("Content-Type", "text/plain")
 		self.end_headers()
-		self.sendString("Hello world")
+		if launcher.start_process('starcraft'):
+			self.sendString("Launched starcraft succesfully")
+		else:
+			self.sendString('Failed to launch starcraft')
 
 
 	def sendString(self, str):
