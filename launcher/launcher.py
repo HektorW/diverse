@@ -22,7 +22,10 @@ class Launcher:
 		'games',
 		'starcraft 2',
 		'starcraft ii',
-		'battle.net'
+		'battle.net',
+		'programs',
+		'program',
+		'spel'
 	]
 
 	FILE_NAMES = [
