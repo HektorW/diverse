@@ -7,7 +7,7 @@ import threading
 
 IP = 'localhost'
 PORT = '54465'
-
+API_ROOT = '/api/face/'
 
 content_types = {
   'form': 'application/x-www-form-urlencoded; charset=UTF-8'
