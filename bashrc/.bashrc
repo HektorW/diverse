@@ -22,18 +22,30 @@ WHITE="\e[97m"
 # Variables
 workspacce=c:users/hekwal/desktop/workspacce
 github=https://github.com/HektorW
+default_branch=4.showroom
 
 # Aliases
-alias gs='git status'
+alias gs='git status -sb'
+alias pitbull='git pull'
+alias ga='git add'
+alias gc='git commit -m'
+alias gd='git diff'
+alias gps='git push'
+alias gpsd='git push origin develop'
+alias gpl='git pull'
+alias glog='git log --stat'
+alias gf='git fetch && gs'
+
+alias ll='ls -Al'
+
+alias ip='python -c "import socket; print(socket.gethostbyname_ex(socket.gethostname())[2])"'
+alias host='python -c "import socket; info=socket.gethostbyname_ex(socket.gethostname()); print(info[0]); print(info[2]);"'
+
 alias reload='source ~/.bashrc'
 alias sublime='c:program\ files/sublime\ text\ 3/sublime_text.exe'
 alias python27='c:python27/python.exe'
-alias ll='ls -l'
 
-
-# ####
-# DLBi 
-# ####
+# Function
 function vbsWork() {
 	args=("$@")
 	branch=${1:-$default_branch}
@@ -48,9 +60,16 @@ function valCalWork() {
 	cd $workspacce/Value\ Calculator/VTC.Value_Calculator_110102528/tools
 	http-server ../ & run_plovr.sh
 }
-default_branch=4.showroom
+function tietoWork() {
+	cd $workspacce/tieto-web/Tieto.Web/FrontEndPrototype
+	grunt
+}
+
+
+# Macro
 alias vbs='vbsWork'
 alias valcal='valCalWork'
+alias tieto='tietoWork'
 
 
 
