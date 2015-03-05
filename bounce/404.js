@@ -8,7 +8,7 @@
 		var Events = {
 			on: function(event, callback, context) {
 				if (!event || !callback) return this;
-				this._events || (this._events = {});
+				if (!this._events) this._events = {};
 				(this._events[event] || (this._events[event] = [])).unshift({ callback: callback, _context: context, ctx: context || this });
 				return this;
 			},
@@ -99,6 +99,9 @@
 	}
 
 
+
+
+
 	var Game = {
 		lastTime: null,
 		canvas: null,
@@ -106,12 +109,21 @@
 
 		bubbles: [],
 		paddle: null,
+		wall: null,
+
+		gravity: new Vec2(0, 0.982),
+
+		saved: 0,
+		dropped: 0,
 
 		spawner: {
 			lastSpawned: 0,
-			delayMin: 0.2,
-			delayMax: 1.5
+			delayMin: 0.8,
+			delayMax: 3.5
 		},
+
+		bubbleMinSpeed: 125,
+		bubbleMaxSpeed: 200,
 
 		mouse: {
 			x: 0,
@@ -119,12 +131,6 @@
 		},
 
 
-		wall: {
-			x: 0,
-			y: 200,
-			width: 200,
-			height: 400
-		},
 
 
 
@@ -167,6 +173,7 @@
 			this.bubbles = [];
 			this.spawner.lastSpawned = 0;
 
+			this.wall = new Rect(0, 50, 75, 550, '#333', 'fill');
 			this.paddle = new Paddle(this);
 
 			this.lastTime = Time.getTime();
@@ -179,7 +186,14 @@
 
 			var time = Time.getTime(this.lastTime);
 
+			this.updateScene(time);
 
+			this.draw(time);
+
+			this.postUpdate(time);
+		},
+
+		updateScene: function(time) {
 			for (var i = this.bubbles.length; i--; ) {
 				var bubble = this.bubbles[i];
 
@@ -197,21 +211,25 @@
 				this.spawnBubble();
 
 				this.spawner.lastSpawned += randRange(this.spawner.delayMin, this.spawner.delayMax);
-				this.spawner.delayMax = Math.max(this.spawner.delayMin, this.spawner.delayMax - 0.01);
+				this.spawner.delayMax = Math.max(this.spawner.delayMin, this.spawner.delayMax - 0.1);
+
+				this.bubbleMinSpeed++;
+				this.bubbleMaxSpeed+=2;
 			}
 
 
 			this.paddle.update(time);
 
-
 			this.checkCollisions(time);
+		},
 
-			this.draw();
-
+		
+		postUpdate: function(time) {
 			this.lastTime = time;
 		},
 
-		draw: function() {
+
+		draw: function(time) {
 			var ctx = this.ctx;
 
 			ctx.fillStyle = '#f2f2f2';
@@ -222,7 +240,11 @@
 				this.bubbles[i].draw(ctx);
 
 
+			this.wall.draw(ctx);
 			this.paddle.draw(ctx);
+
+			ctx.strokeText("Saved: " + this.saved, this.width / 2, 10);
+			ctx.strokeText("Dropped: " + this.dropped, this.width / 2, 30);
 		},
 
 
@@ -230,11 +252,17 @@
 		checkCollisions: function(time) {
 			var rect = this.paddle.getRect();
 
+
+			// Paddle => Bubble
 			for (var i = this.bubbles.length; i--; ) {
 				var bubble = this.bubbles[i];
 
-				if (Collisions.circleInRect(bubble, rect)) {
-					bubble.trigger('hit', bubble);
+				// if (Collisions.circleInRect(bubble, rect)) {
+				if (Collisions.rectInRect(bubble.getRect(), rect)) {
+
+					if (bubble.y < rect.y + rect.height / 2) {
+						bubble.trigger('bounce', bubble);
+					}
 				}
 			}
 		},
@@ -253,15 +281,30 @@
 		spawnBubble: function() {
 			var bubble = new Bubble(this);
 
-			bubble.on('hit.bottom', this.bubbleHitBottom);
+			bubble.on('fall', this.bubbleFall);
+			bubble.on('goal', this.bubbleGoal);
 
 			this.bubbles.push(bubble);
+		},
+
+
+		bubbleGoal: function(bubble) {
+			this.saved++;
+		},
+		bubbleFall: function(bubble) {
+			this.dropped++;
 		}
 	};
 
 
 
 	var Collisions = {
+		rectInRect: function(a, b) {
+			return a.x < b.x + b.width &&
+				   a.x + a.width > b.x &&
+				   a.y < b.y + b.height &&
+				   a.y + a.height > b.y;
+		},
 		circleInRect: function(circle, rect) {
 			return Collisions.pointInRect(circle, rect);
 		},
@@ -272,6 +315,8 @@
 				   point.y < rect.y + rect.y;
 		}
 	};
+
+
 
 
 	///////////
@@ -320,7 +365,18 @@
 	}
 
 	Paddle.prototype.update = function(time) {
-		this.x = this.game.mouse.x;
+		var rect = this.rect;
+		
+		rect.x = this.game.mouse.x - this.rect.width / 2;
+
+		// Contain paddle within bounds
+		var wall = this.game.wall;
+		if (rect.x < wall.x + wall.width) {
+			rect.x = wall.x + wall.width;
+		}
+		if (rect.x + rect.width > this.game.width) {
+			rect.x = this.game.width - rect.width;
+		}
 	};
 
 	Paddle.prototype.draw = function(ctx) {
@@ -342,16 +398,25 @@
 		this.game = game;
 		this.spawn();
 
-		this.on('hit', function() {
-			this.alive = false;
+		// https://mrbubblewand.files.wordpress.com/2010/04/darkness_002.png
+		this.animation = new Animation().load('https://mrbubblewand.files.wordpress.com/2009/09/magic_003.png', 5, 5);
+
+		this.on('bounce', function() {
+			this.vel.y *= -1;
 		}, this);
 	}
 
 	Bubble.prototype.spawn = function() {
 		this.alive = true;
 
-		this.x = randRange(40, this.game.width - 40);
-		this.y = randRange(-40, -10);
+		
+		var launchAngle = randRange(-1.35, -0.2);
+		this.vel = new Vec2(Math.cos(launchAngle), Math.sin(launchAngle));
+		this.velSpeed = randRange(this.game.bubbleMinSpeed, this.game.bubbleMaxSpeed);
+
+
+		this.x = 0;
+		this.y = 200;
 
 		this.velY = randRange(50, 200);
 		this.xVelTimeOffset = randRange(0, Math.PI);
@@ -363,11 +428,19 @@
 
 	Bubble.prototype.update = function(time) {
 
-		this.y += this.velY * time.elapsedMs;
-		this.x += Math.cos(time.now * this.xVelSpeed * this.xVelTimeOffset) * this.xVelDistOffset;
+		this.vel = Vec2.add(this.vel,
+						Vec2.mulVal(this.game.gravity, time.elapsedMs)
+					);
 
-		if (this.y > this.game.height) {
+		this.x += this.vel.x * time.elapsedMs * this.velSpeed;
+		this.y += this.vel.y * time.elapsedMs * this.velSpeed;
+
+		if (this.x > this.game.width) {
 			this.alive = false;
+			this.trigger('goal', this);
+		} else if (this.y > this.game.height) {
+			this.alive = false;
+			this.trigger('fall', this);
 		}
 	};
 
@@ -381,7 +454,94 @@
 
 		ctx.restore();	
 	};
+
+	Bubble.prototype.getRect = function() {
+		return {
+			x: this.x - this.radius,
+			y: this.y - this.radius,
+			width: this.radius * 2,
+			height: this.radius * 2
+		};
+	};
 	extend(Bubble.prototype, Events);
+
+
+
+
+	////////////////
+	// Animation //
+	////////////////
+	function Animation() {
+		this.spritesheet = null;
+		this.loaded = false;
+		this.xCount = 0;
+		this.yCount = 0;
+
+		this.width = 0;
+		this.height = 0;
+
+		this.currentIndex = 0;
+		this.delay = 0.2;
+	}
+	Animation.prototype.setup = function() {
+		animation.width = this.spritesheet.width / this.xCount;
+		animation.height = this.spritesheet.height / this.yCount;
+	};
+	Animation.prototype.load = function(url, xCount, yCount) {
+		var animation = this;
+
+		var img = this.spritesheet = new Image();
+
+		this.spritesheet.onload = function() {
+			animation.loaded = true;
+			animation.setup();
+		};
+		this.spritesheet.onerror = function() {};
+
+		this.spritesheet.src = url;
+
+		return this;
+	};
+	Animation.prototype.update = function(time) {};
+	Animation.prototype.draw = function(ctx, x, y, width, height) {
+		ctx.save();
+
+		var sx = Math.floor(this.spritesheet.width % (this.width * this.currentIndex));
+		var sy = Math.floor(this.spritesheet.width / (this.width * this.currentIndex));
+
+		ctx.drawImage(this.spritesheet, sx, sy, this.width, this.height, x, y, width, height);
+
+		ctx.restore();
+	};
+
+
+
+	//////////
+	// Vec2 //
+	//////////
+	function Vec2(x, y) {
+		this.x = x;
+		this.y = y;
+	}
+	Vec2.clone = function(v) {
+		return new Vec2(v.x, v.y);
+	};
+	Vec2.add = function(v, u) {
+		return new Vec2(u.x + v.x, u.y + v.y);
+	};
+	Vec2.sub = function(v, u) {
+		return new Vec2(u.x - v.x, u.y - v.y);
+	};
+	Vec2.mul = function(v, u) {
+		return new Vec2(u.x * v.x, u.y * v.y);
+	};
+	Vec2.div = function(v, u) {
+		return new Vec2(u.x / v.x, u.y / v.y);
+	};
+	Vec2.mulVal = function(v, e) {
+		return new Vec2(v.x * e, v.y * e);
+	};
+
 
 
 	Game.init();
