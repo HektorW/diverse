@@ -1,3 +1,8 @@
+#! /usr/bin/env python3
+
+"""
+Does some things
+"""
 
 from ctypes import *
 
@@ -5,20 +10,23 @@ psapi = windll.psapi
 kernel = windll.kernel32
 
 
-def EnumProcesses():
-	arr = c_ulong * 256
-	lpidProcess = arr()
-	cb = sizeof(lpidProcess)
-	cbNeeded = c_ulong()
-	psapi.EnumProcesses(byref(lpidProcess), cb, byref(cbNeeded))
+def enum_processes():
+    """
+    Iterates processes
+    """
+    arr = c_ulong * 256
+    lpid_process = arr()
+    cb_size = sizeof(lpid_process)
+    cb_needed = c_ulong()
+    psapi.EnumProcesses(byref(lpid_process), cb_size, byref(cb_needed))
 
-	nReturned = int(cbNeeded.value / sizeof(c_ulong()))
+    n_returned = int(cb_needed.value / sizeof(c_ulong()))
 
-	pidProcess = [i for i in lpidProcess][:nReturned]
+    pid_process = [i for i in lpid_process][:n_returned]
 
-	print(pidProcess)
+    print(pid_process)
 
 
 
 if __name__ == '__main__':
-	EnumProcesses()
+    enum_processes()
